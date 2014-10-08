@@ -39,7 +39,6 @@ public class OrdersResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Order newOrder(
-			@FormParam("id") String id,
 			@FormParam("title") String title,
 			@FormParam("detail") String detail,
 			@Context HttpServletResponse servletResponse
@@ -49,8 +48,8 @@ public class OrdersResource {
 		
 		//Also calculate Cost?
 
-		OrdersDAO.instance.insertOrder(id, o);	
-		//MAybe try get it from db so it has right values?
+		int id = OrdersDAO.instance.insertOrder(o);	
+		o.setId(id);
 		return o;
 	}
 	
@@ -63,7 +62,7 @@ public class OrdersResource {
         // This matches this method which returns BookResource.
 	@Path("{order}")
 	public OrderResource getOrder(
-			@PathParam("order") String id) {
+			@PathParam("order") int id) {
 		return new OrderResource(uriInfo, request, id);
 	}
 	

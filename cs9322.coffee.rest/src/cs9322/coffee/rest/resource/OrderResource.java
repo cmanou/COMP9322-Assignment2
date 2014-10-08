@@ -26,8 +26,8 @@ public class OrderResource {
 	UriInfo uriInfo;
 	@Context
 	Request request;
-	String id;
-	public OrderResource(UriInfo uriInfo, Request request, String id) {
+	int id;
+	public OrderResource(UriInfo uriInfo, Request request, int id) {
 		this.uriInfo = uriInfo;
 		this.request = request;
 		this.id = id;

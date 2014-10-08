@@ -8,20 +8,29 @@ public class Order {
 
 	//TODO: Work out if we need a status flag or something and how to link payment
 	
-	private String id;
+	private int id;
     private String drink;
     private List<String> additions;
-    private float cost;
+    private double cost;
+    private String status;
 
     public Order(){
 
     }
+    
+    public Order(int id, String drink, List<String> additions, double cost, String status){
+    	this.id = id;
+    	this.drink = drink;
+    	this.additions = additions;
+    	this.cost = cost;
+    	this.status = status;
+    }
 
-    public String getId() {
+    public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -41,11 +50,19 @@ public class Order {
 		this.additions = additions;
 	}
 
-	public float getCost() {
+	public double getCost() {
 		return cost;
 	}
 
-	public void setCost(float cost) {
+	public void setCost(double cost) {
 		this.cost = cost;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
