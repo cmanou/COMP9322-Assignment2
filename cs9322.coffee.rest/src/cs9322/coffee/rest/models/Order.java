@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Order {
 
-	//TODO: Work out if we need a status flag or something and how to link payment
+	//TODO: Work out what we need in a status flag or something and how to link payment
 	
 	private int id;
     private String drink;
