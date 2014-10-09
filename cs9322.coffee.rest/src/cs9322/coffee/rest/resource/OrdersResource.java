@@ -3,6 +3,7 @@ package cs9322.coffee.rest.resource;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,9 +27,8 @@ public class OrdersResource {
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public List<Order> getOrders() {
-		List<Order> orders = new ArrayList<Order>();
-		//TODO: Actually get from DB/DAO
+	public Collection<Order> getOrders() {
+		Collection<Order> orders = OrdersDAO.instance.getOrders().values();
 		return orders; 
 	}
 	
