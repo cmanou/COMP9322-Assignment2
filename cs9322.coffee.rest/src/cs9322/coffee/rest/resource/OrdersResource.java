@@ -3,6 +3,7 @@ package cs9322.coffee.rest.resource;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,14 +40,18 @@ public class OrdersResource {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Order newOrder(
-			@FormParam("title") String title,
-			@FormParam("detail") String detail,
+			@FormParam("drink") String drink,
+			@FormParam("additions") List<String> additions,
 			@Context HttpServletResponse servletResponse
 	) throws IOException {
-		//TODO: Actually populate the data in order from form?
 		Order o = new Order();
+		o.setDrink(drink);
+		o.setAdditions(additions);
 		
-		//Also calculate Cost?
+		//Also calculate Cost properly and define status??
+		o.calculateCost();
+		o.setStatus("NEW");
+		
 
 		int id = OrdersDAO.instance.insertOrder(o);	
 		o.setId(id);

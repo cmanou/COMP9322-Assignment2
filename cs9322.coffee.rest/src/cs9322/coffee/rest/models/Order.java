@@ -1,6 +1,8 @@
 package cs9322.coffee.rest.models;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -15,7 +17,7 @@ public class Order {
     private String status;
 
     public Order(){
-
+    	additions = new ArrayList<String>();
     }
     
     public Order(int id, String drink, List<String> additions, double cost, String status){
@@ -64,5 +66,16 @@ public class Order {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public void calculateCost() {
+		// TODO Auto-generated method stub
+		this.cost = 9999;
+		
+	}
+
+	public void addAddition(String addition) {
+		additions.add(addition);
+		
 	}
 }

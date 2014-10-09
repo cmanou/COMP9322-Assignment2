@@ -88,25 +88,31 @@ public enum OrdersDAO {
     }
 
 	public int insertOrder(Order o) {
+		int id = -1;
     	try {
-
+	        
+	        conn.setAutoCommit(false); // Starts transaction.
 	    	String query = "INSERT INTO ORDERS (drink, additions, cost,status) VALUES (?, ?, ?, ?)";
 	        PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	        stmnt.setString(1,o.getDrink());
 	        stmnt.setString(2,o.getAdditions().toString().substring(1, o.getAdditions().toString().length()-1));
 	        stmnt.setDouble(3,o.getCost());
 	        stmnt.setString(4,o.getStatus());
+	        
 	        stmnt.executeUpdate();
-	        ResultSet rs = stmnt.getGeneratedKeys();
-	        if (rs != null && rs.next()) {
-		        int _id = rs.getInt("id"); //TODO: WOrk out if this is right;
-		        return _id;
+	        Statement s = conn.createStatement();
+	        ResultSet rs = s.executeQuery("SELECT last_insert_rowid()");
+	        if (rs.next()) {
+	            id = rs.getInt(1);
 	        }
-
+	        conn.commit(); // Commits transaction.
+	        conn.setAutoCommit(true); 
+	        
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return id;
 	}
 
 	public boolean removeOrder(int id) {
