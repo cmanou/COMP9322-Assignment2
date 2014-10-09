@@ -20,6 +20,7 @@ public class Order {
 
     public Order(){
     	additions = new ArrayList<String>();
+    	cost = 0;
     }
     
     public Order(int id, String drink, List<String> additions, double cost, String status){
@@ -72,8 +73,11 @@ public class Order {
 	}
 
 	public void calculateCost() {
-		// TODO Auto-generated method stub
-		this.cost = 9999;
+		cost = 0;
+		if(!drink.isEmpty()) {
+			cost += 3.5;
+		}
+		cost += 0.3 * additions.size();
 		
 	}
 
