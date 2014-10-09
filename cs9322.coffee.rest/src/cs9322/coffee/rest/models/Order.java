@@ -1,9 +1,11 @@
 package cs9322.coffee.rest.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class Order {
@@ -60,6 +62,7 @@ public class Order {
 		this.cost = cost;
 	}
 
+	@XmlTransient
 	public String getStatus() {
 		return status;
 	}
@@ -77,5 +80,12 @@ public class Order {
 	public void addAddition(String addition) {
 		additions.add(addition);
 		
+	}
+
+	@XmlTransient
+	public String getAvaliableOptions() {
+		// TODO have a map from status to options
+		List<String> temp = Arrays.asList("GET", "PUT");
+		return temp.toString().substring(1, temp.toString().length()-1);
 	}
 }

@@ -72,14 +72,15 @@ public enum OrdersDAO {
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
 	        
-	        rs.first();
-	        int _id = rs.getInt("id");
-	        String drink = rs.getString("drink");
-	        List<String> additions = Arrays.asList(rs.getString("additions").split("\\s*,\\s*"));
-	        double cost  = rs.getDouble("cost");
-        	String status = rs.getString("status");
-        
-        	o = new Order(_id, drink, additions, cost, status);
+	        if(rs.next())  {
+		        int _id = rs.getInt("id");
+		        String drink = rs.getString("drink");
+		        List<String> additions = Arrays.asList(rs.getString("additions").split("\\s*,\\s*"));
+		        double cost  = rs.getDouble("cost");
+	        	String status = rs.getString("status");
+	        
+	        	o = new Order(_id, drink, additions, cost, status);
+	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

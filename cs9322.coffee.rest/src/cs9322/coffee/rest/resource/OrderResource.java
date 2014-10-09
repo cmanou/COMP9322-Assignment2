@@ -1,6 +1,8 @@
 package cs9322.coffee.rest.resource;
 
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -8,6 +10,7 @@ import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
@@ -39,7 +42,7 @@ public class OrderResource {
 	public Order getOrder() {
 		Order o = OrdersDAO.instance.getOrder(id);
 		if(o==null)
-			throw new RuntimeException("GET: Order with" + id +  " not found");
+			throw new RuntimeException("GET: Order with " + id +  " not found");
 		return o;
 	}
 	
@@ -60,9 +63,12 @@ public class OrderResource {
 	
 	
 	@OPTIONS
-	public void optionsOrder() {
+	public Response optionsOrder() {
 		Order o = OrdersDAO.instance.getOrder(id);
-		// TODO: Get it to return something meaningful? Probably need status
+		
+		Response res = Response.ok().header("Allow", o.getAvaliableOptions()).build();
+		 
+		return res;
 	}
 	
 	//TODO: DO this properly
