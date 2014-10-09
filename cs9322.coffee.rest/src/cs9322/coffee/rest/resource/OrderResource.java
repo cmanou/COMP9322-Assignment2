@@ -46,7 +46,7 @@ public class OrderResource {
 		return o;
 	}
 	
-	//TODO: MAYBE allow json
+	//TODO: Fix this
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putOrder(JAXBElement<Order> o) {
@@ -54,6 +54,7 @@ public class OrderResource {
 		return putAndGetResponse(newb);
 	}
 	
+	//TODO: Fix this
 	@DELETE
 	public void deleteOrder() {
 		boolean delb = OrdersDAO.instance.removeOrder(id);
@@ -65,13 +66,11 @@ public class OrderResource {
 	@OPTIONS
 	public Response optionsOrder() {
 		Order o = OrdersDAO.instance.getOrder(id);
-		
 		Response res = Response.ok().header("Allow", o.getAvaliableOptions()).build();
-		 
 		return res;
 	}
 	
-	//TODO: DO this properly
+	//TODO: Fix this
 	private Response putAndGetResponse(Order b) {
 		Response res;
 		if(OrdersDAO.instance.validOrder(b.getId())) {
