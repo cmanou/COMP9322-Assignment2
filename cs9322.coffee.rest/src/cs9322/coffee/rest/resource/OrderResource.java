@@ -1,8 +1,5 @@
 package cs9322.coffee.rest.resource;
 
-
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,7 +7,6 @@ import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
@@ -20,7 +16,6 @@ import javax.xml.bind.JAXBElement;
 import cs9322.coffee.rest.dao.*;
 import cs9322.coffee.rest.models.*;
 
-//TODO: Proper errors
 
 public class OrderResource {
 	// Allows to insert contextual objects into the class, 
@@ -39,46 +34,49 @@ public class OrderResource {
 	// Produces XML or JSON output for a client 'program'			
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Order getOrder() {
+	public Response getOrder() {
 		Order o = OrdersDAO.instance.getOrder(id);
-		if(o==null)
-			throw new RuntimeException("GET: Order with " + id +  " not found");
-		return o;
+		if(o != null) {
+			return Response.ok(o).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 	
-	//TODO: Fix this
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putOrder(JAXBElement<Order> o) {
 		Order newb = o.getValue();
-		return putAndGetResponse(newb);
+		Response res;
+		if(OrdersDAO.instance.validOrder(newb.getId())) {
+			OrdersDAO.instance.updateOrder(newb.getId(), newb);
+			newb = OrdersDAO.instance.getOrder(newb.getId());
+			res = Response.ok(newb).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return res;
 	}
 	
-	//TODO: Fix this
 	@DELETE
-	public void deleteOrder() {
+	public Response deleteOrder() {
 		boolean delb = OrdersDAO.instance.removeOrder(id);
-		if(!delb)
-			throw new RuntimeException("DELETE: Order with " + id +  " not found or could not delete");
+		if(delb) {
+			return Response.ok().build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 	
 	
 	@OPTIONS
 	public Response optionsOrder() {
 		Order o = OrdersDAO.instance.getOrder(id);
-		Response res = Response.ok().header("Allow", o.getAvaliableOptions()).build();
-		return res;
-	}
-	
-	//TODO: Fix this
-	private Response putAndGetResponse(Order b) {
-		Response res;
-		if(OrdersDAO.instance.validOrder(b.getId())) {
-			res = Response.noContent().build();
+		if(o != null) {
+			return Response.ok().header("Allow", o.getAvaliableOptions()).build();
 		} else {
-			res = Response.created(uriInfo.getAbsolutePath()).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		OrdersDAO.instance.updateOrder(b.getId(), b);
-		return res;
 	}
+
 }
