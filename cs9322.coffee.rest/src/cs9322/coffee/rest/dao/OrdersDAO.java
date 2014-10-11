@@ -55,6 +55,7 @@ public enum OrdersDAO {
 	        	String status = rs.getString("status");
 	        	
 	        	Order o = new Order(id, drink, additions, cost, status);
+	        	o.generateLinks();
 	        	orders.put(id, o);
 	        }
 		} catch (SQLException e) {
@@ -78,8 +79,9 @@ public enum OrdersDAO {
 		        List<String> additions = Arrays.asList(rs.getString("additions").split("\\s*,\\s*"));
 		        double cost  = rs.getDouble("cost");
 	        	String status = rs.getString("status");
-	        
 	        	o = new Order(_id, drink, additions, cost, status);
+	        	o.generateLinks();
+
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();

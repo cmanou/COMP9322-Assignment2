@@ -2,7 +2,9 @@ package cs9322.coffee.rest.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -17,10 +19,12 @@ public class Order {
     private List<String> additions;
     private double cost;
     private String status;
+    private List<Link> link; //ie self and parent
 
     public Order(){
     	additions = new ArrayList<String>();
     	cost = 0;
+    	link = new ArrayList<Link>();
     }
     
     public Order(int id, String drink, List<String> additions, double cost, String status){
@@ -29,6 +33,8 @@ public class Order {
     	this.additions = additions;
     	this.cost = cost;
     	this.status = status;
+    	this.link = new ArrayList<Link>();
+
     }
 
     public int getId() {
@@ -91,5 +97,20 @@ public class Order {
 		// TODO have a map from status to options
 		List<String> temp = Arrays.asList("GET", "PUT");
 		return temp.toString().substring(1, temp.toString().length()-1);
+	}
+	
+	public void generateLinks() { //CALL before you want to display
+		//TODO add depending on status
+		link.add(new Link("self", "http://test.com"));
+		link.add(new Link("payment", "http://test.com"));
+		
+	}
+	
+	public List<Link> getLinks() {
+		return link;
+	}
+
+	public void setLinks(List<Link> links) {
+		this.link= links;
 	}
 }
