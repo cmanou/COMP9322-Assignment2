@@ -47,6 +47,7 @@ public class OrderResource {
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putOrder(JAXBElement<Order> o) {
 		Order newb = o.getValue();
+		newb.calculateCost();
 		Response res;
 		if(OrdersDAO.instance.validOrder(newb.getId())) {
 			OrdersDAO.instance.updateOrder(newb.getId(), newb);
