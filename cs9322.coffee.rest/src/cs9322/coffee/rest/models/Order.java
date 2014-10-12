@@ -26,6 +26,7 @@ public class Order {
     public static String STATUS_PAID = "PAID";
     public static String STATUS_CANCELLED = "CANCELLED";
     public static String STATUS_SERVED = "SERVED";
+    public static String STATUS_PREPARING = "PREPARING";
 
     public Order(){
     	additions = new ArrayList<String>();
