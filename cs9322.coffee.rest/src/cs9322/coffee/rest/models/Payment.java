@@ -59,6 +59,10 @@ public class Payment {
 		link.add(new Link("payment", "http://test.com"));
 		
 	}
+	public Object getAvaliableOptions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 
  
