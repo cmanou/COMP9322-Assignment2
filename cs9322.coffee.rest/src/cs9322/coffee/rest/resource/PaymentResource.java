@@ -1,7 +1,6 @@
 package cs9322.coffee.rest.resource;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
@@ -45,22 +44,19 @@ public class PaymentResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response putOrder(JAXBElement<Order> o) {
-		//TODO: Check if exits insert or update
-		Order newb = o.getValue();
-		newb.calculateCost();
-		Response res;
-		if(OrdersDAO.instance.validOrder(newb.getId())) {
-			OrdersDAO.instance.updateOrder(newb.getId(), newb);
-			newb = OrdersDAO.instance.getOrder(newb.getId());
-			res = Response.ok(newb).build();
-		} else {
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		return res;
-	}
-	
+	public Response putOrder(JAXBElement<Payment> p) {
+		Payment putP = p.getValue();
 
+		if(PaymentsDAO.instance.paymentExits(putP.getId())) {
+			PaymentsDAO.instance.updatePayment(putP);
+		} else {
+			PaymentsDAO.instance.insertPayment(putP);
+		}
+		
+		putP = PaymentsDAO.instance.getPayment(putP.getId());
+		return Response.ok(putP).build();
+
+	}
 	
 	
 	@OPTIONS

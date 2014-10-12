@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javax.naming.*;
 import javax.sql.*;
 
-
 import cs9322.coffee.rest.models.*;
 
 
@@ -119,7 +118,7 @@ public enum PaymentsDAO {
 		return false;
 	}
 
-	public boolean updateOrder(int id, Payment p) {
+	public boolean updatePayment(Payment p) {
     	try {
 
 	    	String query = "UPDATE PAYMENTS SET type = ?, amount = ?, card_number = ?, card_name = ? , card_cvc = ? WHERE id = ?";
@@ -145,6 +144,21 @@ public enum PaymentsDAO {
 		}
     	return false;
 		
+	}
+
+	public boolean paymentExits(int id) {
+    	try {
+	    	String query = "SELECT * FROM PAYMENTS WHERE ID = ?";
+	        PreparedStatement stmnt = conn.prepareStatement(query);
+	        stmnt.setInt(1,id);
+	        ResultSet rs = stmnt.executeQuery();
+	        rs.last();
+	        return rs.getRow() == 1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+    	return false;
 	}
 
 }
