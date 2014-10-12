@@ -44,11 +44,8 @@ public class OrdersResource {
 		Order o = new Order();
 		o.setDrink(drink);
 		o.setAdditions(additions);
-		
-		//Also calculate Cost properly and define status??
 		o.calculateCost();
-		o.setStatus("NEW");
-		
+		o.setStatus(Order.STATUS_PLACED);
 
 		int id = OrdersDAO.instance.insertOrder(o);	
 		o.setId(id);

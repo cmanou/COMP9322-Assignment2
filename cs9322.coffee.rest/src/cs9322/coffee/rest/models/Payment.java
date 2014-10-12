@@ -13,12 +13,15 @@ public class Payment {
     private List<Link> link; //ie self and parent
     private CardDetail card;
     
+    public static String CASH = "CASH";
+    public static String CARD = "CARD";
+    
 	public Payment(int id, String type, double amount, String card_number,
 			String card_name, String card_cvc) {
 		this.id = id;
 		this.type = type;
 		this.amount = amount;
-		if(type.equals("CARD")) {
+		if(type.equals(CARD)) {
 			this.card = new CardDetail(card_name, card_number, card_cvc);
 		}
 	}

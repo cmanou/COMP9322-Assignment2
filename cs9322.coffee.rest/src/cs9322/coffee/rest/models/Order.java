@@ -7,6 +7,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import cs9322.coffee.rest.dao.PaymentsDAO;
+
 @XmlRootElement
 public class Order {
 
@@ -16,8 +18,14 @@ public class Order {
     private String drink;
     private List<String> additions;
     private double cost;
-    private String status;
+    private String status; //PLACED, PAID, CANCELLED, SERVED
     private List<Link> link; //ie self and parent
+    
+  
+    public static String STATUS_PLACED = "PLACED";
+    public static String STATUS_PAID = "PAID";
+    public static String STATUS_CANCELLED = "CANCELLED";
+    public static String STATUS_SERVED = "SERVED";
 
     public Order(){
     	additions = new ArrayList<String>();
@@ -102,6 +110,10 @@ public class Order {
 		link.add(new Link("self", "http://test.com"));
 		link.add(new Link("payment", "http://test.com"));
 		
+	}
+	
+	public boolean paid() {
+		return PaymentsDAO.instance.paymentExits(id);
 	}
 	
 	public List<Link> getLinks() {

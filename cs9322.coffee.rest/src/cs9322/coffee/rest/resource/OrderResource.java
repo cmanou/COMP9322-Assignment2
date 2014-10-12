@@ -61,6 +61,7 @@ public class OrderResource {
 	
 	@DELETE
 	public Response deleteOrder() {
+		//TODO: Should change status not delete;
 		boolean delb = OrdersDAO.instance.removeOrder(id);
 		if(delb) {
 			return Response.ok().build();

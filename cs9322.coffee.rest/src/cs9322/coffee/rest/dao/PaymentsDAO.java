@@ -98,7 +98,7 @@ public enum PaymentsDAO {
 	        stmnt.setInt(1,p.getId());
 	        stmnt.setString(2,p.getType());
 	        stmnt.setDouble(3,p.getAmount());
-	        if(p.getType().equals("CARD")) {
+	        if(p.getType().equals(Payment.CARD)) {
 		        stmnt.setString(4,p.getCard().getNumber());
 		        stmnt.setString(5,p.getCard().getName());
 		        stmnt.setString(6,p.getCard().getCvc());
@@ -126,7 +126,7 @@ public enum PaymentsDAO {
 	       
 	        stmnt.setString(1,p.getType());
 	        stmnt.setDouble(2,p.getAmount());
-	        if(p.getType().equals("CARD")) {
+	        if(p.getType().equals(Payment.CARD)) {
 		        stmnt.setString(3,p.getCard().getNumber());
 		        stmnt.setString(4,p.getCard().getName());
 		        stmnt.setString(5,p.getCard().getCvc());
