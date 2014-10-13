@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 import cs9322.coffee.barista.actions.*;
 
 
-@WebServlet( name="HotelOwnerServlet", displayName="Hotel Owner Servlet", urlPatterns = {"/owner/*"}, loadOnStartup=1)
+@WebServlet( name="MainServlet", displayName="Main Servlet", urlPatterns = {"/barista/*"}, loadOnStartup=1)
 public class mainController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Map<String, Action> actions;
