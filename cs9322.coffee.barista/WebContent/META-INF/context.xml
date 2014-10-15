@@ -1,0 +1,4 @@
+<Context>
+    <Environment name="restPath" value="http://localhost:8080/cs9322.coffee.rest" type="java.lang.String"/>
+    
+</Context>

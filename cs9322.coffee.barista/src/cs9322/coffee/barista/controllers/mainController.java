@@ -28,6 +28,10 @@ public class mainController extends HttpServlet {
 	       actions = new HashMap<String, Action>();
 	       
 	       actions.put("GET/", new OrderList());
+	       actions.put("GET/order", new OrderGet());
+	       actions.put("GET/payment", new OrderPaymentGet());
+	       actions.put("POST/prepare", new OrderPrepare());
+	       actions.put("POST/release", new OrderRelease());
 
 
 	       logger.info("Finished Barista Loading");
