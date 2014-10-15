@@ -2,34 +2,36 @@ package cs9322.coffee.barista.actions;
 
 
 import javax.servlet.http.HttpServletRequest;
-
-
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+import javax.ws.rs.core.MediaType;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 import cs9322.coffee.rest.models.*;
 
 
-public class OrderList implements Action {
+public class OrderList extends Action {
 	static Logger logger = Logger.getLogger(OrderList.class.getName());
 
-	
-	
-	public OrderList() throws ServletException {
-		super();
-		//TODO set it up
-	}
+	public String execute(HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		Client client = Client.create();
+		WebResource service = client.resource(getBaseURI());
 
-	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) {
-		//TODO get data
-		//request.setAttribute("orders", orders);
+		ClientResponse cresponse = service.path("rest").path("orders").accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+		logger.info("Status = " + cresponse.getStatus());
+
 		
-		
+		logger.info("XML = " + cresponse.getEntity(String.class));
+
 		return "/WEB-INF/orderList.jsp";
-	}
+	} 
 
 }
