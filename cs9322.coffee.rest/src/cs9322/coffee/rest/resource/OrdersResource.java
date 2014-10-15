@@ -27,9 +27,9 @@ public class OrdersResource {
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response getOrders() {
+	public Collection<Order> getOrders() {
 		Collection<Order> orders = OrdersDAO.instance.getOrders(uriInfo).values();
-		return Response.ok(orders).build(); 
+		return orders; 
 	}
 	
 
