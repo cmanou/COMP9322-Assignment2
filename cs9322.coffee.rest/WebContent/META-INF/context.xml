@@ -1,8 +1,0 @@
-<Context>
-    <Resource name="jdbc/sqlite"
-    type="javax.sql.DataSource"
-    driverClassName="org.sqlite.JDBC"
-    url="jdbc:sqlite:/home/charbel/UNSW/2014/semester2/COMP9322/assignments/ass2/COMP9322-Assignment2/cs9322.coffee.rest/WebContent/WEB-INF/coffee.db"
-    />
-</Context>
-<!-- Work out how to set a relative path? -->

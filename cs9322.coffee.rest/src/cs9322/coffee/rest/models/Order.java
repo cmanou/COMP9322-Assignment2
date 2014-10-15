@@ -103,8 +103,16 @@ public class Order {
 
 	@XmlTransient
 	public String getAvaliableOptions() {
-		// TODO have a map from status to options
-		List<String> temp = Arrays.asList("GET", "PUT");
+		// Can get at anytime.
+		List<String> temp = new ArrayList<String>();
+		
+		temp.add("GET");
+		
+		// Can amend order only when it has just been placed.
+		if(status.equals(Order.STATUS_PLACED)) { 
+			temp.add("PUT");
+			temp.add("DELETE");
+		}
 		return temp.toString().substring(1, temp.toString().length()-1);
 	}
 	

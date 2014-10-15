@@ -1,6 +1,8 @@
 package cs9322.coffee.rest.resource;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,9 +27,9 @@ public class OrdersResource {
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Collection<Order> getOrders() {
+	public Response getOrders() {
 		Collection<Order> orders = OrdersDAO.instance.getOrders(uriInfo).values();
-		return orders; 
+		return Response.ok(orders).build(); 
 	}
 	
 
@@ -36,11 +38,11 @@ public class OrdersResource {
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Order newOrder(
+	public Response newOrder(
 			@FormParam("drink") String drink,
 			@FormParam("additions") List<String> additions,
 			@Context HttpServletResponse servletResponse
-	) throws IOException {
+	) throws IOException, URISyntaxException {
 		Order o = new Order();
 		o.setDrink(drink);
 		o.setAdditions(additions);
@@ -49,37 +51,18 @@ public class OrdersResource {
 
 		int id = OrdersDAO.instance.insertOrder(o);	
 		o.setId(id);
-		return o;
+		
+		URI uri = new URI("http://www.google.com?q=a"); //TODO fix this to be the URI of the order
+		
+		return Response.ok(o).location(uri).status(Response.Status.CREATED).build();
 	}
 	
 	@OPTIONS
-	@Produces({MediaType.APPLICATION_XML})
-	public String getOptionsXML() {
-		
-		StringBuilder myStringBuilder = new StringBuilder();
-		myStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>");
-		myStringBuilder.append("<options>");
-		myStringBuilder.append("<option>GET</option>");
-		myStringBuilder.append("<option>POST</option>");
-		myStringBuilder.append("</options>");
-		
-		return myStringBuilder.toString(); 
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getOptions() {
+		return Response.ok().header("Allow", "GET, POST").build(); 
 	}
 	
-	@OPTIONS
-	@Produces({MediaType.APPLICATION_JSON})
-	public String getOptionsJSON() {
-		
-		StringBuilder myStringBuilder = new StringBuilder();
-		myStringBuilder.append("{");
-		myStringBuilder.append("\"options\":[");
-		myStringBuilder.append("{\"option\":\"GET\"},");
-		myStringBuilder.append("{\"option\":\"POST\"}");
-		myStringBuilder.append("]");
-		myStringBuilder.append("}");
-				
-		return myStringBuilder.toString(); 
-	}
 	
 	// Important to note that this Path annotation define.
 	// This will match xxx.xxx.xxx/rest/books/{book}
