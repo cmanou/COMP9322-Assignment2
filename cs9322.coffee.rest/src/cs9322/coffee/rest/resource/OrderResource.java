@@ -72,13 +72,30 @@ public class OrderResource {
 	
 	
 	@OPTIONS
-	public Response optionsOrder() {
+	@Produces({MediaType.APPLICATION_XML})
+	public String optionsOrder() {
+		
+		// Check if order exists.
 		Order o = OrdersDAO.instance.getOrder(id, uriInfo);
+		
+		StringBuilder myStringBuilder = new StringBuilder();
+		myStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>");
+		myStringBuilder.append("<options>");
+		
 		if(o != null) {
-			return Response.ok().header("Allow", o.getAvaliableOptions()).build();
-		} else {
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
+			
+			// Can get at anytime.
+			myStringBuilder.append("<option>GET</option>");
+			
+			// Can amend order only when it has just been placed.
+			if(o.getStatus().equals(Order.STATUS_PLACED)) {
+				myStringBuilder.append("<option>PUT</option>");
+				myStringBuilder.append("<option>DELETE</option>");
+			}
+		} 
+		myStringBuilder.append("</options>");
+		
+		return myStringBuilder.toString();
 	}
 
 }

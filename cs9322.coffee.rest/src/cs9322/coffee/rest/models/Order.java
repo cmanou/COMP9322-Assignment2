@@ -117,12 +117,10 @@ public class Order {
 		String selfURI = myURI.toString()+"orders/"+this.id;
 		link.add(new Link("self", selfURI));
 		
-		// When payment link is shown.
-		if(this.status.equals(STATUS_PLACED)) {
-			String paymentURI = myURI.toString();
-			link.add(new Link("payment", paymentURI));
-		}
-		
+		// Payment details can be retrieved at any time.
+		String paymentURI = myURI.toString()+"payment/"+this.id;
+		link.add(new Link("payment", paymentURI));
+
 	}
 	
 	public boolean paid() {
