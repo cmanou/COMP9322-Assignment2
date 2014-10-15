@@ -22,14 +22,14 @@ public class PaymentsResource {
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response getOrders() {
+	public Collection<Payment> getOrders() {
 		Collection<Payment> payments = PaymentsDAO.instance.getPayments().values();
-		return Response.ok(payments).build(); 
+		return payments;
 	}
 	
 	@Path("{payment}")
 	public PaymentResource getPayment(
-			@PathParam("paymennt") int id) {
+			@PathParam("payment") int id) {
 		return new PaymentResource(uriInfo, request, id);
 	}
 	

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import javax.naming.*;
 import javax.sql.*;
+import javax.ws.rs.core.UriInfo;
 
 
 import cs9322.coffee.rest.models.*;
@@ -29,7 +30,7 @@ public enum OrdersDAO {
             conn = ds.getConnection();
             Statement statement = conn.createStatement();
             try {
-                statement.executeUpdate("create table orders(id integer PRIMARY KEY, drink text, additions text, cost double, status text )");
+                statement.executeUpdate("create table orders(id integer PRIMARY KEY, drink varchar(100), additions varchar(100), cost real, status varchar(100) )");
             } catch (Exception e) { 
                  // Could well be already there
             }
@@ -39,7 +40,7 @@ public enum OrdersDAO {
         
     }
     
-    public Map<Integer, Order> getOrders(){
+    public Map<Integer, Order> getOrders(UriInfo aUriInfo){
     	Map<Integer, Order> orders = new HashMap<Integer, Order>();
     	try {
 
@@ -55,7 +56,7 @@ public enum OrdersDAO {
 	        	String status = rs.getString("status");
 	        	
 	        	Order o = new Order(id, drink, additions, cost, status);
-	        	o.generateLinks();
+	        	o.generateLinks(aUriInfo);
 	        	orders.put(id, o);
 	        }
 		} catch (SQLException e) {
@@ -64,7 +65,7 @@ public enum OrdersDAO {
         return orders;
     }
     
-    public Order getOrder(int id){
+    public Order getOrder(int id, UriInfo aUriInfo){
     	Order o = null;
     	try {
 
@@ -80,7 +81,7 @@ public enum OrdersDAO {
 		        double cost  = rs.getDouble("cost");
 	        	String status = rs.getString("status");
 	        	o = new Order(_id, drink, additions, cost, status);
-	        	o.generateLinks();
+	        	o.generateLinks(aUriInfo);
 
 	        }
 		} catch (SQLException e) {

@@ -19,14 +19,14 @@ public enum PaymentsDAO {
     
     private PaymentsDAO() {
 		Logger myLogger = Logger.getLogger("test");
-  
+		
         try {
             Context ctx = new InitialContext();
             ds = (DataSource) ctx.lookup("java:comp/env/jdbc/sqlite");
             conn = ds.getConnection();
             Statement statement = conn.createStatement();
             try {
-                statement.executeUpdate("create table payments(id integer PRIMARY KEY, type text, amount double, card_number text, card_name text, card_cvc text )");
+                statement.executeUpdate("create table payments(id integer PRIMARY KEY, type varchar(100), amount real, card_number varchar(100), card_name varchar(100), card_cvc varchar(100) )");
             } catch (Exception e) { 
                  // Could well be already there
             }
@@ -36,14 +36,15 @@ public enum PaymentsDAO {
         
     }
     
-    public Map<Integer, Payment> getPayments(){
+    public Map<Integer, Payment> getPayments()
+    {
     	Map<Integer, Payment> payments = new HashMap<Integer, Payment>();
+    	
     	try {
 
 	    	String query = "SELECT * FROM PAYMENTS";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        ResultSet rs = stmnt.executeQuery();
-	        
 	        while(rs.next()) {
 		        int id = rs.getInt("id");
 		        String type = rs.getString("type");
@@ -54,6 +55,7 @@ public enum PaymentsDAO {
 	        	
 	        	Payment p = new Payment(id, type, amount, card_number, card_name, card_cvc);
 	        	p.generateLinks();
+	        	
 	        	payments.put(id, p);
 	        }
 		} catch (SQLException e) {
@@ -152,9 +154,12 @@ public enum PaymentsDAO {
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
-	        rs.last();
-	        return rs.getRow() == 1;
-
+	        
+	        if(rs.next())
+	        {
+	        	return rs.getRow() == 1;
+	        }
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		

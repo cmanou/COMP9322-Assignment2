@@ -35,7 +35,7 @@ public class OrderResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOrder() {
-		Order o = OrdersDAO.instance.getOrder(id);
+		Order o = OrdersDAO.instance.getOrder(id, uriInfo);
 		if(o != null) {
 			return Response.ok(o).build();
 		} else {
@@ -51,7 +51,7 @@ public class OrderResource {
 		Response res;
 		if(OrdersDAO.instance.validOrder(newb.getId())) {
 			OrdersDAO.instance.updateOrder(newb.getId(), newb);
-			newb = OrdersDAO.instance.getOrder(newb.getId());
+			newb = OrdersDAO.instance.getOrder(newb.getId(), uriInfo);
 			res = Response.ok(newb).build();
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -73,7 +73,7 @@ public class OrderResource {
 	
 	@OPTIONS
 	public Response optionsOrder() {
-		Order o = OrdersDAO.instance.getOrder(id);
+		Order o = OrdersDAO.instance.getOrder(id, uriInfo);
 		if(o != null) {
 			return Response.ok().header("Allow", o.getAvaliableOptions()).build();
 		} else {

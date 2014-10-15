@@ -1,9 +1,11 @@
 package cs9322.coffee.rest.models;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -22,11 +24,11 @@ public class Order {
     private List<Link> link; //ie self and parent
     
   
-    public static String STATUS_PLACED = "PLACED";
-    public static String STATUS_PAID = "PAID";
-    public static String STATUS_CANCELLED = "CANCELLED";
-    public static String STATUS_SERVED = "SERVED";
-    public static String STATUS_PREPARING = "PREPARING";
+    public static final String STATUS_PLACED = "PLACED";
+    public static final String STATUS_PAID = "PAID";
+    public static final String STATUS_CANCELLED = "CANCELLED";
+    public static final String STATUS_SERVED = "SERVED";
+    public static final String STATUS_PREPARING = "PREPARING";
 
     public Order(){
     	additions = new ArrayList<String>();
@@ -106,10 +108,20 @@ public class Order {
 		return temp.toString().substring(1, temp.toString().length()-1);
 	}
 	
-	public void generateLinks() { //CALL before you want to display
-		//TODO add depending on status
-		link.add(new Link("self", "http://test.com"));
-		link.add(new Link("payment", "http://test.com"));
+	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
+		
+		// Get base URI and create needed links.
+		URI myURI = aUriInfo.getBaseUri();
+		
+		// Always be able to get order until deleted.
+		String selfURI = myURI.toString()+"orders/"+this.id;
+		link.add(new Link("self", selfURI));
+		
+		// When payment link is shown.
+		if(this.status.equals(STATUS_PLACED)) {
+			String paymentURI = myURI.toString();
+			link.add(new Link("payment", paymentURI));
+		}
 		
 	}
 	

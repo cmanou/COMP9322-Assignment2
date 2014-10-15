@@ -8,6 +8,12 @@ public class CardDetail {
 	private String number;
 	private String cvc;
 	
+	public CardDetail() {
+		this.name  = "";
+		this.number = "";
+		this.cvc = "";
+	}
+	
 	public CardDetail(String card_name, String card_number, String card_cvc) {
 		this.name  = card_name;
 		this.number = card_number;

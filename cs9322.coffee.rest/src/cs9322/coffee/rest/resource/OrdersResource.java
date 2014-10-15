@@ -26,7 +26,7 @@ public class OrdersResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Collection<Order> getOrders() {
-		Collection<Order> orders = OrdersDAO.instance.getOrders().values();
+		Collection<Order> orders = OrdersDAO.instance.getOrders(uriInfo).values();
 		return orders; 
 	}
 	
@@ -52,6 +52,34 @@ public class OrdersResource {
 		return o;
 	}
 	
+	@OPTIONS
+	@Produces({MediaType.APPLICATION_XML})
+	public String getOptionsXML() {
+		
+		StringBuilder myStringBuilder = new StringBuilder();
+		myStringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>");
+		myStringBuilder.append("<options>");
+		myStringBuilder.append("<option>GET</option>");
+		myStringBuilder.append("<option>POST</option>");
+		myStringBuilder.append("</options>");
+		
+		return myStringBuilder.toString(); 
+	}
+	
+	@OPTIONS
+	@Produces({MediaType.APPLICATION_JSON})
+	public String getOptionsJSON() {
+		
+		StringBuilder myStringBuilder = new StringBuilder();
+		myStringBuilder.append("{");
+		myStringBuilder.append("\"options\":[");
+		myStringBuilder.append("{\"option\":\"GET\"},");
+		myStringBuilder.append("{\"option\":\"POST\"}");
+		myStringBuilder.append("]");
+		myStringBuilder.append("}");
+				
+		return myStringBuilder.toString(); 
+	}
 	
 	// Important to note that this Path annotation define.
 	// This will match xxx.xxx.xxx/rest/books/{book}

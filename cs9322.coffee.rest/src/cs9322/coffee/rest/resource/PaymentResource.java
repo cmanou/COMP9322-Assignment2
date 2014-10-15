@@ -58,7 +58,7 @@ public class PaymentResource {
 
 	}
 	
-	
+	/*
 	@OPTIONS
 	public Response optionsOrder() {
 		Payment p = PaymentsDAO.instance.getPayment(id);
@@ -68,5 +68,6 @@ public class PaymentResource {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
-
+	*/
+	
 }

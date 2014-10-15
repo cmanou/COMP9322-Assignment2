@@ -1,5 +1,6 @@
 package cs9322.coffee.rest.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,6 +17,14 @@ public class Payment {
     public static String CASH = "CASH";
     public static String CARD = "CARD";
     
+    public Payment()
+    {
+    	this.id = -1;
+		this.type = "";
+		this.amount = -1;
+		this.card = null;
+    }
+    
 	public Payment(int id, String type, double amount, String card_number,
 			String card_name, String card_cvc) {
 		this.id = id;
@@ -24,6 +33,8 @@ public class Payment {
 		if(type.equals(CARD)) {
 			this.card = new CardDetail(card_name, card_number, card_cvc);
 		}
+		
+		this.link = new ArrayList<Link>();
 	}
 	public int getId() {
 		return id;
@@ -62,11 +73,13 @@ public class Payment {
 		link.add(new Link("payment", "http://test.com"));
 		
 	}
+	
+	/*
 	public Object getAvaliableOptions() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-    
+    */
 
  
    
