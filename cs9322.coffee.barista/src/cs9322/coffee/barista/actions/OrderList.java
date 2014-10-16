@@ -6,14 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.ws.rs.core.MediaType;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import cs9322.coffee.rest.models.*;
 
 
 public class OrderList extends Action {
@@ -21,7 +19,7 @@ public class OrderList extends Action {
 
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) {
-		
+		logger.info("Called OrderList");
 		Client client = Client.create();
 		WebResource service = client.resource(getBaseURI());
 

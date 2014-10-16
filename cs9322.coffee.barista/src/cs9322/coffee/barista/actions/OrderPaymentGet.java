@@ -10,6 +10,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import cs9322.coffee.rest.models.Order;
+import cs9322.coffee.rest.models.Payment;
+
 public class OrderPaymentGet extends Action {
 	static Logger logger = Logger.getLogger(OrderPaymentGet.class.getName());
 
@@ -24,10 +27,15 @@ public class OrderPaymentGet extends Action {
 		ClientResponse cresponse = service.path("rest").path("payments").path(id).accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 		logger.info("Status = " + cresponse.getStatus());
 
-		
-		logger.info("XML = " + cresponse.getEntity(String.class));
+		Payment p = null;
+		if(cresponse.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+			p = cresponse.getEntity(Payment.class);
+			logger.info("Payment = " + p.getAmount());
 
-		return "/WEB-INF/orderGet.jsp";
+		}
+		request.setAttribute("id", id);
+		request.setAttribute("payment", p);
+		return "/WEB-INF/paymentGet.jsp";
 	} 
 
 }

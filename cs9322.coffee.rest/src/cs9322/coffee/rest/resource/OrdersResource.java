@@ -32,8 +32,6 @@ public class OrdersResource {
 		return Response.ok(myList).build(); 
 	}
 	
-
-	
     // Client should set Content Type accordingly
 	@POST
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

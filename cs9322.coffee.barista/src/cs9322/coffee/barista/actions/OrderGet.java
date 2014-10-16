@@ -7,17 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.representation.Form;
 
-import java.net.URI;
+import cs9322.coffee.rest.models.Order;
+
 import java.util.logging.Logger;
 
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
 
-import cs9322.coffee.rest.models.*;
 
 public class OrderGet extends Action {
 	static Logger logger = Logger.getLogger(OrderGet.class.getName());
@@ -34,9 +30,14 @@ public class OrderGet extends Action {
 		ClientResponse cresponse = service.path("rest").path("orders").path(id).accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 		logger.info("Status = " + cresponse.getStatus());
 
-		
-		logger.info("XML = " + cresponse.getEntity(String.class));
+		Order o = null;
+		if(cresponse.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+			o = cresponse.getEntity(Order.class);
+			logger.info("Drink = " + o.getDrink());
 
+		}
+		
+		request.setAttribute("order", o);
 		return "/WEB-INF/orderGet.jsp";
 	} 
 
