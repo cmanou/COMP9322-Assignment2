@@ -22,7 +22,7 @@
             <div class="l-box">
 			<c:choose>
 				<c:when test="${not empty order}">
-					<h3 class="information-head">Order</h3>
+					<h3 class="information-head">Order ID: ${order.id}</h3>
 					<table class="pure-table pure-table-horizontal">
 					<thead>
 						<tr>
