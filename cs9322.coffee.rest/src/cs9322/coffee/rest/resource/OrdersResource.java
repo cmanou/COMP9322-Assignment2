@@ -41,19 +41,26 @@ public class OrdersResource {
 			@FormParam("additions") List<String> additions,
 			@Context HttpServletResponse servletResponse
 	) throws IOException, URISyntaxException {
-		Order o = new Order();
-		o.setDrink(drink);
-		o.setAdditions(additions);
-		o.calculateCost();
-		o.setStatus(Order.STATUS_PLACED);
-
-		int id = DatabaseDAO.instance.insertOrder(o);	
-		o.setId(id);
-		o.generateLinks(uriInfo);
 		
-		URI uri = new URI(o.getLinks().get(0).getHref());
-		
-		return Response.ok(o).location(uri).status(Response.Status.CREATED).build();
+		if(drink != null){
+			Order o = new Order();
+			o.setDrink(drink);
+			o.setAdditions(additions);
+			o.calculateCost();
+			o.setStatus(Order.STATUS_PLACED);
+	
+			int id = DatabaseDAO.instance.insertOrder(o);	
+			o.setId(id);
+			o.generateLinks(uriInfo);
+			
+			URI uri = new URI(o.getLinks().get(0).getHref());
+			
+			return Response.ok(o).location(uri).status(Response.Status.CREATED).build();
+		}
+		else
+		{
+			return Response.status(Response.Status.NO_CONTENT).build();
+		}
 	}
 	
 	@OPTIONS
