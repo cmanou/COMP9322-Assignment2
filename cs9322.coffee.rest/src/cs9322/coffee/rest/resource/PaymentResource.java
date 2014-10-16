@@ -50,25 +50,25 @@ public class PaymentResource {
 	public Response putPayment(JAXBElement<Payment> p) throws URISyntaxException {
 		Payment putP = p.getValue();
 		
-		// Make sure id is same as URL id.
-		putP.setId(this.id);
-		
 		// Check if payment should exist.
-		if(DatabaseDAO.instance.validOrder(putP.getId())) {
+		Order relatedOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+		if(relatedOrder != null) {
 			
 			// Check that payment record doesnt exist .i.e. payment hasnt been made.
-			boolean exists = DatabaseDAO.instance.paymentExits(putP.getId());
+			boolean exists = DatabaseDAO.instance.paymentExits(this.id);
 			if(!exists) {
 				
-				// Insert payment.
+				// Make sure same fields have same values and Insert payment.
+				putP.setAmount(relatedOrder.getCost());
+				putP.setId(relatedOrder.getId());
 				DatabaseDAO.instance.insertPayment(putP);
 				
 				// Update order status.
-				Order relatedOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 				relatedOrder.setStatus(Order.STATUS_PAID);
-				DatabaseDAO.instance.updateOrder(putP.getId(), relatedOrder);
+				DatabaseDAO.instance.updateOrder(this.id, relatedOrder);
 				
-				Payment pRec = DatabaseDAO.instance.getPayment(putP.getId(), uriInfo);
+				// Get links.
+				Payment pRec = DatabaseDAO.instance.getPayment(this.id, uriInfo);
 				pRec.generateLinks(uriInfo);
 				URI uri = new URI(pRec.getLinks().get(0).getHref());
 				

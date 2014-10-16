@@ -46,16 +46,24 @@ public class OrderResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putOrder(JAXBElement<Order> o) {
+		
 		Order newb = o.getValue();
-		newb.calculateCost();
 		
 		Response res;
-		if(DatabaseDAO.instance.validOrder(newb.getId())) {
+		
+		// Get corresponding order if exists.
+		Order dbOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+		if(dbOrder != null) {
+			
+			// Safety value manipulation.
+			newb.calculateCost();
+			newb.setId(this.id);
+			newb.setStatus(dbOrder.getStatus());
 			
 			// Can only update order if status is placed.
-			if(newb.getStatus().equals(Order.STATUS_PLACED)) {
-				DatabaseDAO.instance.updateOrder(newb.getId(), newb);
-				newb = DatabaseDAO.instance.getOrder(newb.getId(), uriInfo);
+			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)) {
+				DatabaseDAO.instance.updateOrder(this.id, newb);
+				newb = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 				res = Response.ok(newb).build();
 			}
 			else
@@ -72,14 +80,13 @@ public class OrderResource {
 	public Response deleteOrder() {
 		
 		// Check if order exists.
-		if(DatabaseDAO.instance.validOrder(id))
+		Order aOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+		if(aOrder != null)
 		{
-			Order aOrder = DatabaseDAO.instance.getOrder(id, uriInfo);
-			
 			// Check that order can be deleted.
 			if(aOrder.getStatus().equals(Order.STATUS_PLACED)) {
 				aOrder.setStatus(Order.STATUS_CANCELLED);
-				DatabaseDAO.instance.updateOrder(id, aOrder);
+				DatabaseDAO.instance.updateOrder(this.id, aOrder);
 				
 				return Response.ok().build();
 			} else {
