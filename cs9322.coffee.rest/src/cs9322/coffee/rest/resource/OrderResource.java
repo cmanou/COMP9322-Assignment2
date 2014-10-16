@@ -47,21 +47,22 @@ public class OrderResource {
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putOrder(JAXBElement<Order> o) {
 		
-		Order newb = o.getValue();
-		
 		Response res;
 		
 		// Get corresponding order if exists.
 		Order dbOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 		if(dbOrder != null) {
-			
-			// Safety value manipulation.
-			newb.calculateCost();
-			newb.setId(this.id);
-			newb.setStatus(dbOrder.getStatus());
-			
+	
 			// Can only update order if status is placed.
 			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)) {
+				
+				Order newb = o.getValue();
+				
+				// Safety value manipulation.
+				newb.calculateCost();
+				newb.setId(this.id);
+				newb.setStatus(dbOrder.getStatus());
+				
 				DatabaseDAO.instance.updateOrder(this.id, newb);
 				newb = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 				res = Response.ok(newb).build();

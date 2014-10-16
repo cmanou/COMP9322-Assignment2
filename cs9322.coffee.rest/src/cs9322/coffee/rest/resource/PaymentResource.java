@@ -48,7 +48,6 @@ public class PaymentResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response putPayment(JAXBElement<Payment> p) throws URISyntaxException {
-		Payment putP = p.getValue();
 		
 		// Check if payment should exist.
 		Order relatedOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
@@ -57,6 +56,8 @@ public class PaymentResource {
 			// Check that payment record doesnt exist .i.e. payment hasnt been made.
 			boolean exists = DatabaseDAO.instance.paymentExits(this.id);
 			if(!exists) {
+				
+				Payment putP = p.getValue();
 				
 				// Make sure same fields have same values and Insert payment.
 				putP.setAmount(relatedOrder.getCost());
