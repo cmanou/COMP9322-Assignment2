@@ -37,7 +37,7 @@
 							<td>${order.drink}</td>
 							<td>${order.additions}</td>
 							<td>${order.status}</td>
-							<td>${order.cost}</td>
+							<td><fmt:formatNumber value="${order.cost}" type="currency" /></td>
 						</tr>
 					</tbody>
 					</table>
