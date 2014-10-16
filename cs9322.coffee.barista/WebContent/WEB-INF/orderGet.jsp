@@ -28,12 +28,25 @@
 						<tr>
 							<th>Drink</th>
 							<th>Additions</th>
+							<th>Status</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>${order.drink}</td>
 							<td>${order.additions}</td>
+							<td>${order.status}</td>
+							<td>
+									<form action='/cs9322.coffee.barista/barista/prepare' method='POST'class="pure-form pure-form-stacked" >
+										<input type="hidden" name="id" value="${order.id}" > 
+										<input type='submit' value='Prepare' class="pure-button pure-button-primary"> 
+									</form>
+									<a href="/cs9322.coffee.barista/barista/payment?id=${order.id}">Check Payment</a>
+									<form action='/cs9322.coffee.barista/barista/release' method='POST'class="pure-form pure-form-stacked" >
+										<input type="hidden" name="id" value="${order.id}" > 
+										<input type='submit' value='Release' class="pure-button pure-button-primary"> 
+									</form>
+								</td>
 						</tr>
 					</tbody>
 					</table>
