@@ -4,36 +4,40 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     
     
-<jsp:include page="/header.jsp">
-	<jsp:param name="title" value="Orders" />	
-</jsp:include>
+<c:choose>
+	<c:when test="${not empty payment}">
+		<jsp:include page="/header.jsp">
+			<jsp:param name="title" value="Payment -  ${id}" />	
+		</jsp:include>
+	</c:when>
+	<c:otherwise>
+		<jsp:include page="/header.jsp">
+			<jsp:param name="title" value="Payment - ${id} - Not Found" />	
+		</jsp:include>	</c:otherwise>
+</c:choose>
 
 <div class="l-content">
     <div class="information pure-g">
         <div class="pure-u-1-1">
             <div class="l-box">
 			<c:choose>
-				<c:when test="${not empty orders}">
-					<h3 class="information-head">Orders</h3>
+				<c:when test="${not empty payment}">
+					<h3 class="information-head">Payment - Order ${id}</h3>
 					<table class="pure-table pure-table-horizontal">
 					<thead>
 						<tr>
-							<th>Drink</th>
-							<th>Additions</th>
+							<th>Amount</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="payment" items="${payments}">
-							<tr>
-								<td>${order.drink}</td>
-								<td>${order.additions}</td>
-							</tr>
-						</c:forEach>
+						<tr>
+							<td>${payment.amount}</td>
+						</tr>
 					</tbody>
 					</table>
 				</c:when>
 				<c:otherwise>
-                	<h3 class="information-head">No Orders</h3>
+                	<h3 class="information-head">Payment for Order ${id} Not Found</h3>
 				</c:otherwise>
 			</c:choose>
             </div>
