@@ -153,12 +153,12 @@ public enum OrdersDAO {
 
 	public boolean validOrder(int id) {
     	try {
-	    	String query = "SELECT * FROM ORDERS WHERE ID = ?";
+	    	String query = "SELECT COUNT(*) AS COUNT FROM ORDERS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
-	        rs.last();
-	        return rs.getRow() == 1;
+	        rs.next();
+	        return rs.getInt("COUNT") == 1;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
