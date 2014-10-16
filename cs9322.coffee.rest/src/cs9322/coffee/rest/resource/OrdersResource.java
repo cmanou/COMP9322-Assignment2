@@ -28,8 +28,8 @@ public class OrdersResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOrders() {
-		Collection<Order> orders = OrdersDAO.instance.getOrders(uriInfo).values();
-		return Response.ok(orders).build(); 
+		OrdersList myList = DatabaseDAO.instance.getOrders(uriInfo);
+		return Response.ok(myList).build(); 
 	}
 	
 
@@ -49,10 +49,11 @@ public class OrdersResource {
 		o.calculateCost();
 		o.setStatus(Order.STATUS_PLACED);
 
-		int id = OrdersDAO.instance.insertOrder(o);	
+		int id = DatabaseDAO.instance.insertOrder(o);	
 		o.setId(id);
+		o.generateLinks(uriInfo);
 		
-		URI uri = new URI("http://www.google.com?q=a"); //TODO fix this to be the URI of the order
+		URI uri = new URI(o.getLinks().get(0).getHref());
 		
 		return Response.ok(o).location(uri).status(Response.Status.CREATED).build();
 	}

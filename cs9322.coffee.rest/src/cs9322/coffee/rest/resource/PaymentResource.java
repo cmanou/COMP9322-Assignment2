@@ -1,5 +1,8 @@
 package cs9322.coffee.rest.resource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
@@ -34,7 +37,7 @@ public class PaymentResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getPayment() {
-		Payment p = PaymentsDAO.instance.getPayment(id);
+		Payment p = DatabaseDAO.instance.getPayment(id, uriInfo);
 		if(p != null) {
 			return Response.ok(p).build();
 		} else {
@@ -44,30 +47,70 @@ public class PaymentResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response putOrder(JAXBElement<Payment> p) {
+	public Response putPayment(JAXBElement<Payment> p) throws URISyntaxException {
 		Payment putP = p.getValue();
-
-		if(PaymentsDAO.instance.paymentExits(putP.getId())) {
-			PaymentsDAO.instance.updatePayment(putP);
-		} else {
-			PaymentsDAO.instance.insertPayment(putP);
-		}
 		
-		putP = PaymentsDAO.instance.getPayment(putP.getId());
-		return Response.ok(putP).build();
-
-	}
-	
-	/*
-	@OPTIONS
-	public Response optionsOrder() {
-		Payment p = PaymentsDAO.instance.getPayment(id);
-		if(p != null) {
-			return Response.ok().header("Allow", p.getAvaliableOptions()).build();
+		// Make sure id is same as URL id.
+		putP.setId(this.id);
+		
+		// Check if payment should exist.
+		if(DatabaseDAO.instance.validOrder(putP.getId())) {
+			
+			// Check that payment record doesnt exist .i.e. payment hasnt been made.
+			boolean exists = DatabaseDAO.instance.paymentExits(putP.getId());
+			if(!exists) {
+				
+				// Insert payment.
+				DatabaseDAO.instance.insertPayment(putP);
+				
+				// Update order status.
+				Order relatedOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+				relatedOrder.setStatus(Order.STATUS_PAID);
+				DatabaseDAO.instance.updateOrder(putP.getId(), relatedOrder);
+				
+				Payment pRec = DatabaseDAO.instance.getPayment(putP.getId(), uriInfo);
+				pRec.generateLinks(uriInfo);
+				URI uri = new URI(pRec.getLinks().get(0).getHref());
+				
+				return Response.ok(pRec).location(uri).status(Response.Status.CREATED).build();
+			} else {
+				return Response.status(Response.Status.PRECONDITION_FAILED).build();
+			}
+			
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
-	*/
+	
+	
+	@OPTIONS
+	public Response optionsOrder() {
+		
+		// Check if order exists.
+		if(DatabaseDAO.instance.validOrder(id))
+		{
+			//Payment aPayment = PaymentsDAO.instance.getPayment(id, uriInfo);
+			Order aOrder = DatabaseDAO.instance.getOrder(id, uriInfo);
+			
+			StringBuilder myStringBuilder = new StringBuilder();
+			
+			if(aOrder.getStatus().equals(Order.STATUS_PLACED)) {
+				myStringBuilder.append("PUT");
+			} else if(aOrder.getStatus().equals(Order.STATUS_PAID)) {
+				myStringBuilder.append("GET");
+			} else if(aOrder.getStatus().equals(Order.STATUS_PREPARING)) {
+				myStringBuilder.append("GET");
+			} else if(aOrder.getStatus().equals(Order.STATUS_SERVED)) {
+				myStringBuilder.append("GET");
+			}
+			
+			return Response.ok().header("Allow", myStringBuilder.toString()).build();
+		}
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+	}
+	
 	
 }

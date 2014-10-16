@@ -22,9 +22,15 @@ public class PaymentsResource {
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Collection<Payment> getOrders() {
-		Collection<Payment> payments = PaymentsDAO.instance.getPayments().values();
-		return payments;
+	public Response getOrders() {
+		PaymentList myList = DatabaseDAO.instance.getPayments(uriInfo);
+		return Response.ok(myList).build(); 
+	}
+	
+	@OPTIONS
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getOptions() {
+		return Response.ok().header("Allow", "GET").build(); 
 	}
 	
 	@Path("{payment}")

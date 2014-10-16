@@ -35,7 +35,7 @@ public class OrderResource {
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOrder() {
-		Order o = OrdersDAO.instance.getOrder(id, uriInfo);
+		Order o = DatabaseDAO.instance.getOrder(id, uriInfo);
 		if(o != null) {
 			return Response.ok(o).build();
 		} else {
@@ -48,11 +48,20 @@ public class OrderResource {
 	public Response putOrder(JAXBElement<Order> o) {
 		Order newb = o.getValue();
 		newb.calculateCost();
+		
 		Response res;
-		if(OrdersDAO.instance.validOrder(newb.getId())) {
-			OrdersDAO.instance.updateOrder(newb.getId(), newb);
-			newb = OrdersDAO.instance.getOrder(newb.getId(), uriInfo);
-			res = Response.ok(newb).build();
+		if(DatabaseDAO.instance.validOrder(newb.getId())) {
+			
+			// Can only update order if status is placed.
+			if(newb.getStatus().equals(Order.STATUS_PLACED)) {
+				DatabaseDAO.instance.updateOrder(newb.getId(), newb);
+				newb = DatabaseDAO.instance.getOrder(newb.getId(), uriInfo);
+				res = Response.ok(newb).build();
+			}
+			else
+			{
+				return Response.status(Response.Status.PRECONDITION_FAILED).build();
+			}
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
@@ -61,11 +70,24 @@ public class OrderResource {
 	
 	@DELETE
 	public Response deleteOrder() {
-		//TODO: Should change status not delete;
-		boolean delb = OrdersDAO.instance.removeOrder(id);
-		if(delb) {
-			return Response.ok().build();
-		} else {
+		
+		// Check if order exists.
+		if(DatabaseDAO.instance.validOrder(id))
+		{
+			Order aOrder = DatabaseDAO.instance.getOrder(id, uriInfo);
+			
+			// Check that order can be deleted.
+			if(aOrder.getStatus().equals(Order.STATUS_PLACED)) {
+				aOrder.setStatus(Order.STATUS_CANCELLED);
+				DatabaseDAO.instance.updateOrder(id, aOrder);
+				
+				return Response.ok().build();
+			} else {
+				return Response.status(Response.Status.PRECONDITION_FAILED).build();
+			}
+		}
+		else
+		{
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
@@ -73,14 +95,18 @@ public class OrderResource {
 	@OPTIONS
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOptions() {
-		Order o = OrdersDAO.instance.getOrder(id, uriInfo);
-
 		
-		if(o != null) {
+		// Check if order exists.
+		if(DatabaseDAO.instance.validOrder(id))
+		{
+			Order aOrder = DatabaseDAO.instance.getOrder(id, uriInfo);
 			
-			return Response.ok().header("Allow", o.getAvaliableOptions()).build();
-		} 
-		return Response.status(Response.Status.NOT_FOUND).build(); 
+			return Response.ok().header("Allow", aOrder.getAvaliableOptions()).build();
+		}
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 	
 

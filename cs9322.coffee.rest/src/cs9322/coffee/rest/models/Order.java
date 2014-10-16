@@ -2,14 +2,13 @@ package cs9322.coffee.rest.models;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import cs9322.coffee.rest.dao.PaymentsDAO;
+import cs9322.coffee.rest.dao.DatabaseDAO;
 
 @XmlRootElement
 public class Order {
@@ -78,7 +77,6 @@ public class Order {
 		this.cost = cost;
 	}
 
-	@XmlTransient
 	public String getStatus() {
 		return status;
 	}
@@ -109,7 +107,7 @@ public class Order {
 		temp.add("GET");
 		
 		// Can amend order only when it has just been placed.
-		if(status.equals(Order.STATUS_PLACED)) { 
+		if(this.status.equals(Order.STATUS_PLACED)) { 
 			temp.add("PUT");
 			temp.add("DELETE");
 		}
@@ -118,6 +116,8 @@ public class Order {
 	
 	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
 		
+		this.link.clear();
+		
 		// Get base URI and create needed links.
 		URI myURI = aUriInfo.getBaseUri();
 		
@@ -125,14 +125,16 @@ public class Order {
 		String selfURI = myURI.toString()+"orders/"+this.id;
 		link.add(new Link("self", selfURI));
 		
-		// Payment details can be retrieved at any time.
+		if(!this.status.equals(Order.STATUS_CANCELLED)) {
+		// Payment details can be retrieved at any time except when order canceled.
 		String paymentURI = myURI.toString()+"payment/"+this.id;
 		link.add(new Link("payment", paymentURI));
-
+		}
+		
 	}
 	
 	public boolean paid() {
-		return PaymentsDAO.instance.paymentExits(id);
+		return DatabaseDAO.instance.paymentExits(id);
 	}
 	
 	public List<Link> getLinks() {
