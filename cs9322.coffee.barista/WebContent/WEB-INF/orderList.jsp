@@ -21,7 +21,8 @@
 							<th>Drink</th>
 							<th>Additions</th>
 							<th>Status</th>
-							<th>Links</th>
+							<th>Cost</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -30,6 +31,7 @@
 								<td>${order.drink}</td>
 								<td>${order.additions}</td>
 								<td>${order.status}</td>
+								<td><fmt:formatNumber value="${order.cost}" type="currency" /></td>
 								<td>
 									<form action='/cs9322.coffee.barista/barista/prepare' method='POST'class="pure-form pure-form-stacked" >
 										<input type="hidden" name="id" value="${order.id}" > 
