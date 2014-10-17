@@ -12,8 +12,6 @@ import cs9322.coffee.rest.dao.DatabaseDAO;
 
 @XmlRootElement
 public class Order {
-
-	//TODO: Work out what we need in a status flag or something and how to link payment
 	
 	private int id;
     private String drink;

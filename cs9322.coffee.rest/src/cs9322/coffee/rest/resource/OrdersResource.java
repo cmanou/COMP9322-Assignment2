@@ -55,7 +55,7 @@ public class OrdersResource {
 			
 			URI uri = new URI(o.getLinks().get(0).getHref());
 			
-			return Response.ok(o).location(uri).status(Response.Status.CREATED).build();
+			return Response.ok(o).location(uri).status(Response.Status.CREATED).type(MediaType.APPLICATION_XML_TYPE).build();
 		}
 		else
 		{
