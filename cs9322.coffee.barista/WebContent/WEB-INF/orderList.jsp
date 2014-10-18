@@ -21,6 +21,7 @@
 							<th>Drink</th>
 							<th>Additions</th>
 							<th>Status</th>
+							<th>Payment Status</th>
 							<th>Cost</th>
 							<th colspan="3">Actions</th>
 						</tr>
@@ -32,6 +33,7 @@
 								<td><a href="/cs9322.coffee.barista/barista/order?id=${order.id}">${order.drink}</a></td>
 								<td>${order.additions}</td>
 								<td>${order.status}</td>
+								<td>${order.paymentStatus}</td>
 								<td><fmt:formatNumber value="${order.cost}" type="currency" /></td>
 								<td>
 									<form action='/cs9322.coffee.barista/barista/prepare' method='POST'class="pure-form pure-form-stacked" >
