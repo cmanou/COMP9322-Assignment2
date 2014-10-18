@@ -100,19 +100,24 @@ public class Order {
 		
 	}
 
-	@XmlTransient
-	public String getAvaliableOptions() {
+	public String getAvaliableOptions(boolean aBarista, boolean aCustomer) {
 		// Can get at anytime.
 		List<String> temp = new ArrayList<String>();
 		
 		temp.add("GET");
-		
-		// Can amend order only when it has just been placed.
-		if(this.status.equals(Order.STATUS_PLACED) && !paid()) { 
+				
+		// CHeck client.
+		if(aBarista)
+		{
 			temp.add("PUT");
-			temp.add("DELETE");
+		} else {
+			// Can amend order only when it has just been placed.
+			if(this.status.equals(Order.STATUS_PLACED) && !paid()) { 
+				temp.add("PUT");
+				temp.add("DELETE");
+			}
 		}
-		//TODO maybe check if it is barista cause they can always put?
+		
 		return temp.toString().substring(1, temp.toString().length()-1);
 	}
 	

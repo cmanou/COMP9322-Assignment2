@@ -22,11 +22,25 @@ public class OrdersResource {
 	UriInfo uriInfo;
 	@Context
 	Request request;
-
+	
+	@Context
+	HttpHeaders requestHeaders;
+	
+	private boolean isAuthorizedCustomer = false;
+	private boolean isAuthorizedBarista = false;
+	
 	// Return the list of orders for client applications/programs
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOrders() {
+		
+		this.checkClient();
+		if(!this.isAuthorizedBarista && !this.isAuthorizedCustomer)
+		{	
+			// Do not have authorization.
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+		
 		OrdersList myList = DatabaseDAO.instance.getOrders(uriInfo);
 		return Response.ok(myList).build(); 
 	}
@@ -40,6 +54,13 @@ public class OrdersResource {
 			@FormParam("additions") List<String> additions,
 			@Context HttpServletResponse servletResponse
 	) throws IOException, URISyntaxException {
+		
+		this.checkClient();
+		if(!this.isAuthorizedBarista && !this.isAuthorizedCustomer)
+		{	
+			// Do not have authorization.
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 		
 		if(drink != null){
 			Order o = new Order();
@@ -66,6 +87,14 @@ public class OrdersResource {
 	@OPTIONS
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getOptions() {
+		
+		this.checkClient();
+		if(!this.isAuthorizedBarista && !this.isAuthorizedCustomer)
+		{	
+			// Do not have authorization.
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+		
 		return Response.ok().header("Allow", "GET, POST").build(); 
 	}
 	
@@ -79,7 +108,23 @@ public class OrdersResource {
 	@Path("{order}")
 	public OrderResource getOrder(
 			@PathParam("order") int id) {
-		return new OrderResource(uriInfo, request, id);
+		return new OrderResource(uriInfo, request, id, this.requestHeaders);
 	}
+	
+	private void checkClient()
+	{
+		List<String> myList = this.requestHeaders.getRequestHeader("key");
+		
+		if(myList != null)
+		{
+			// Key has been found, check its number.
+			if(myList.get(0).equals("barista")) {
+				this.isAuthorizedBarista = true;
+			} else if(myList.get(0).equals("customer")) {
+				this.isAuthorizedCustomer = true;
+			}
+		}
+	}
+	
 	
 }
