@@ -1,7 +1,5 @@
 package cs9322.coffee.rest.resource;
 
-import java.util.Collection;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 

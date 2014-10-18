@@ -8,7 +8,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import cs9322.coffee.rest.dao.DatabaseDAO;
 
 @XmlRootElement
 public class Order {
@@ -17,29 +16,33 @@ public class Order {
     private String drink;
     private List<String> additions;
     private double cost;
-    private String status; //PLACED, PAID, CANCELLED, SERVED
+    private String status; //PLACED, CANCELLED, SERVED, PREPARING
+    private String paymentStatus; //PAID UNPAID
     private List<Link> link; //ie self and parent
     
   
     public static final String STATUS_PLACED = "PLACED";
-    public static final String STATUS_PAID = "PAID";
     public static final String STATUS_CANCELLED = "CANCELLED";
     public static final String STATUS_SERVED = "SERVED";
     public static final String STATUS_PREPARING = "PREPARING";
 
+    public static final String PAID = "PAID";
+    public static final String UNPAID = "UNPAID";
+    
     public Order(){
     	additions = new ArrayList<String>();
     	cost = 0;
     	link = new ArrayList<Link>();
     }
     
-    public Order(int id, String drink, List<String> additions, double cost, String status){
+    public Order(int id, String drink, List<String> additions, double cost, String status, String paymentStatus){
     	this.id = id;
     	this.drink = drink;
     	this.additions = additions;
     	this.cost = cost;
     	this.status = status;
     	this.link = new ArrayList<Link>();
+    	this.paymentStatus = paymentStatus;
 
     }
 
@@ -105,10 +108,11 @@ public class Order {
 		temp.add("GET");
 		
 		// Can amend order only when it has just been placed.
-		if(this.status.equals(Order.STATUS_PLACED)) { 
+		if(this.status.equals(Order.STATUS_PLACED) && !paid()) { 
 			temp.add("PUT");
 			temp.add("DELETE");
 		}
+		//TODO maybe check if it is barista cause they can always put?
 		return temp.toString().substring(1, temp.toString().length()-1);
 	}
 	
@@ -132,7 +136,7 @@ public class Order {
 	}
 	
 	public boolean paid() {
-		return DatabaseDAO.instance.paymentExits(id);
+		return paymentStatus.equals(PAID);
 	}
 	
 	public List<Link> getLinks() {
@@ -141,5 +145,13 @@ public class Order {
 
 	public void setLinks(List<Link> links) {
 		this.link= links;
+	}
+
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 }

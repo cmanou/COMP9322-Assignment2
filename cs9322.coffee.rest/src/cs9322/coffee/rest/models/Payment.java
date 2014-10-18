@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import cs9322.coffee.rest.dao.DatabaseDAO;
 
 @XmlRootElement
 public class Payment {

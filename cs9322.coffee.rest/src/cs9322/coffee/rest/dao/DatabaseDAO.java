@@ -3,10 +3,7 @@ package cs9322.coffee.rest.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.naming.*;
@@ -32,7 +29,7 @@ public enum DatabaseDAO {
             conn = ds.getConnection();
             Statement statement = conn.createStatement();
             try {
-                statement.executeUpdate("create table orders(id integer PRIMARY KEY, drink text, additions text, cost real, status text)");
+                statement.executeUpdate("create table orders(id integer PRIMARY KEY, drink text, additions text, cost real, status text, payment_status text)");
             } catch (Exception e) { 
                  // Could well be already there
             }
@@ -65,8 +62,9 @@ public enum DatabaseDAO {
 		        List<String> additions = Arrays.asList(rs.getString("additions").split("\\s*,\\s*"));
 		        double cost  = rs.getDouble("cost");
 	        	String status = rs.getString("status");
+	        	String paymentStatus = rs.getString("payment_status");
 	        	
-	        	Order o = new Order(id, drink, additions, cost, status);
+	        	Order o = new Order(id, drink, additions, cost, status, paymentStatus);
 	        	o.generateLinks(aUriInfo);
 	        	newList.add(o);
 	        }
@@ -94,7 +92,9 @@ public enum DatabaseDAO {
 		        List<String> additions = Arrays.asList(rs.getString("additions").split("\\s*,\\s*"));
 		        double cost  = rs.getDouble("cost");
 	        	String status = rs.getString("status");
-	        	o = new Order(_id, drink, additions, cost, status);
+	        	String paymentStatus = rs.getString("payment_status");
+	        	
+	        	o = new Order(_id, drink, additions, cost, status, paymentStatus);
 	        	o.generateLinks(aUriInfo);
 
 	        }
@@ -111,12 +111,13 @@ public enum DatabaseDAO {
     	try {
     		conn = ds.getConnection();
 	        conn.setAutoCommit(false); // Starts transaction.
-	    	String query = "INSERT INTO ORDERS (drink, additions, cost,status) VALUES (?, ?, ?, ?)";
+	    	String query = "INSERT INTO ORDERS (drink, additions, cost,status, payment_status) VALUES (?, ?, ?, ?, ?)";
 	        PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	        stmnt.setString(1,o.getDrink());
 	        stmnt.setString(2,o.getAdditions().toString().substring(1, o.getAdditions().toString().length()-1));
 	        stmnt.setDouble(3,o.getCost());
 	        stmnt.setString(4,o.getStatus());
+	        stmnt.setString(5,o.getPaymentStatus());
 	        
 	        stmnt.executeUpdate();
 	        Statement s = conn.createStatement();
@@ -154,13 +155,14 @@ public enum DatabaseDAO {
     	try {
     		conn = ds.getConnection();
 
-	    	String query = "UPDATE ORDERS SET drink = ?, additions = ?, cost = ?, status = ? WHERE id = ?";
+	    	String query = "UPDATE ORDERS SET drink = ?, additions = ?, cost = ?, status = ?, payment_status = ? WHERE id = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 	        stmnt.setString(1,o.getDrink());
 	        stmnt.setString(2,o.getAdditions().toString().substring(1, o.getAdditions().toString().length()-1));
 	        stmnt.setDouble(3,o.getCost());
 	        stmnt.setString(4,o.getStatus());
-	        stmnt.setInt(5,o.getId());
+	        stmnt.setString(5,o.getPaymentStatus());
+	        stmnt.setInt(6,o.getId());
 	        stmnt.executeUpdate();
 
 	        conn.close();

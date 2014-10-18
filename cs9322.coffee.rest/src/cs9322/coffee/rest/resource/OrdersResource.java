@@ -3,7 +3,6 @@ package cs9322.coffee.rest.resource;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +47,7 @@ public class OrdersResource {
 			o.setAdditions(additions);
 			o.calculateCost();
 			o.setStatus(Order.STATUS_PLACED);
+			o.setPaymentStatus(Order.UNPAID);
 	
 			int id = DatabaseDAO.instance.insertOrder(o);	
 			o.setId(id);

@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXBElement;
 
 import cs9322.coffee.rest.dao.*;
 import cs9322.coffee.rest.models.*;
@@ -54,23 +53,32 @@ public class OrderResource {
 		Order dbOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 		if(dbOrder != null) {
 	
-			// Can only update order if status is placed.
-			//TODO: We need this to happen even if status is in othere conditions for barista 
-		
-//			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)) {
-								
+			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)
+					/* && clientKey? */) {			
 				// Safety value manipulation.
 				o.calculateCost();
-				o.setId(this.id);
-				
-				DatabaseDAO.instance.updateOrder(this.id, o);
-				o = DatabaseDAO.instance.getOrder(this.id, uriInfo);
-				res = Response.ok(o).build();
-//			}
-//			else
-//			{
-//				return Response.status(Response.Status.PRECONDITION_FAILED).build();
-//			}
+				o.setStatus(Order.STATUS_PLACED);
+			} else if(dbOrder.getStatus().equals(Order.STATUS_PLACED) 
+					&& o.getStatus().equals(Order.STATUS_PREPARING)
+					/* && baristaKey? */) {			
+				o.setAdditions(dbOrder.getAdditions());
+				o.setDrink(dbOrder.getDrink());
+				o.calculateCost();
+			} else if(dbOrder.getStatus().equals(Order.STATUS_PREPARING) 
+					&& o.getPaymentStatus().equals(Order.PAID)
+					&& o.getStatus().equals(Order.STATUS_SERVED)
+					/* && baristaKey? */) {			
+				o.setAdditions(dbOrder.getAdditions());
+				o.setDrink(dbOrder.getDrink());
+				o.calculateCost();
+			} else {
+				return Response.status(Response.Status.PRECONDITION_FAILED).build();
+			}
+			o.setId(this.id);
+	
+			DatabaseDAO.instance.updateOrder(this.id, o);
+			o = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+			res = Response.ok(o).build();
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
