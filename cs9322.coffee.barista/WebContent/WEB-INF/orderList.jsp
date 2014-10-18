@@ -22,28 +22,34 @@
 							<th>Additions</th>
 							<th>Status</th>
 							<th>Cost</th>
-							<th>Actions</th>
+							<th colspan="3">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="order" items="${orders}">
+							<c:if test="${not order.finished}">
 							<tr>
-								<td>${order.drink}</td>
+								<td><a href="/cs9322.coffee.barista/barista/order?id=${order.id}">${order.drink}</a></td>
 								<td>${order.additions}</td>
 								<td>${order.status}</td>
 								<td><fmt:formatNumber value="${order.cost}" type="currency" /></td>
 								<td>
 									<form action='/cs9322.coffee.barista/barista/prepare' method='POST'class="pure-form pure-form-stacked" >
 										<input type="hidden" name="id" value="${order.id}" > 
-										<input type='submit' value='Prepare' class="pure-button pure-button-primary"> 
+										<input type='submit' value='Prepare' class="pure-button"> 
 									</form>
-									<a href="/cs9322.coffee.barista/barista/payment?id=${order.id}">Check Payment</a>
+								</td>
+								<td>
+									<a href="/cs9322.coffee.barista/barista/payment?id=${order.id}" class="pure-button ">Check Payment</a>
+								</td>
+								<td>
 									<form action='/cs9322.coffee.barista/barista/release' method='POST'class="pure-form pure-form-stacked" >
 										<input type="hidden" name="id" value="${order.id}" > 
-										<input type='submit' value='Release' class="pure-button pure-button-primary"> 
+										<input type='submit' value='Release' class="pure-button "> 
 									</form>
 								</td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					</tbody>
 					</table>

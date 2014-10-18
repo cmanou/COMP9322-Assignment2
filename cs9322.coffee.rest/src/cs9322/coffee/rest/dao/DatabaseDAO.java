@@ -42,6 +42,7 @@ public enum DatabaseDAO {
             } catch (Exception e) { 
                  // Could well be already there
             }
+            conn.close();
         } catch (Exception e) {
         	myLogger.info(e.getMessage());
         } 
@@ -53,7 +54,7 @@ public enum DatabaseDAO {
     	List<Order> newList = new ArrayList<Order>();
     	
     	try {
-
+    		conn = ds.getConnection();
 	    	String query = "SELECT * FROM ORDERS";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        ResultSet rs = stmnt.executeQuery();
@@ -69,10 +70,10 @@ public enum DatabaseDAO {
 	        	o.generateLinks(aUriInfo);
 	        	newList.add(o);
 	        }
+	    	conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
     	OrdersList newOrdersList = new OrdersList(newList);
     	
         return newOrdersList;
@@ -81,7 +82,7 @@ public enum DatabaseDAO {
     public Order getOrder(int id, UriInfo aUriInfo){
     	Order o = null;
     	try {
-
+    		conn = ds.getConnection();
 	    	String query = "SELECT * FROM ORDERS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
@@ -97,6 +98,7 @@ public enum DatabaseDAO {
 	        	o.generateLinks(aUriInfo);
 
 	        }
+	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -107,7 +109,7 @@ public enum DatabaseDAO {
 	public int insertOrder(Order o) {
 		int id = -1;
     	try {
-	        
+    		conn = ds.getConnection();
 	        conn.setAutoCommit(false); // Starts transaction.
 	    	String query = "INSERT INTO ORDERS (drink, additions, cost,status) VALUES (?, ?, ?, ?)";
 	        PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -124,7 +126,7 @@ public enum DatabaseDAO {
 	        }
 	        conn.commit(); // Commits transaction.
 	        conn.setAutoCommit(true); 
-	        
+	        conn.close();
 	        
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -134,10 +136,12 @@ public enum DatabaseDAO {
 
 	public boolean removeOrder(int id) {
     	try {
+    		conn = ds.getConnection();
 	    	String query = "DELETE FROM ORDERS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        stmnt.executeUpdate();
+	        conn.close();
 	        return true;
 
 		} catch (SQLException e) {
@@ -148,6 +152,7 @@ public enum DatabaseDAO {
 
 	public void updateOrder(int id, Order o) {
     	try {
+    		conn = ds.getConnection();
 
 	    	String query = "UPDATE ORDERS SET drink = ?, additions = ?, cost = ?, status = ? WHERE id = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -158,6 +163,7 @@ public enum DatabaseDAO {
 	        stmnt.setInt(5,o.getId());
 	        stmnt.executeUpdate();
 
+	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -166,14 +172,18 @@ public enum DatabaseDAO {
 
 	public boolean validOrder(int id) {
     	try {
+    		conn = ds.getConnection();
+
 	    	String query = "SELECT * FROM ORDERS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
 	        
+	        conn.close();
 	        if(rs.next()) {
 	        	return rs.getRow() == 1;
 	        }
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -185,6 +195,7 @@ public enum DatabaseDAO {
     	List<Payment> newList = new ArrayList<Payment>();
     	
     	try {
+    		conn = ds.getConnection();
 
 	    	String query = "SELECT * FROM PAYMENTS";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
@@ -202,6 +213,7 @@ public enum DatabaseDAO {
 	        	
 	        	newList.add(p);
 	        }
+	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -214,6 +226,7 @@ public enum DatabaseDAO {
     public Payment getPayment(int id, UriInfo aUriInfo){
     	Payment p = null;
     	try {
+    		conn = ds.getConnection();
 
 	    	String query = "SELECT * FROM PAYMENTS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
@@ -232,6 +245,7 @@ public enum DatabaseDAO {
 	        	p.generateLinks(aUriInfo);
 
 	        }
+	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -241,7 +255,8 @@ public enum DatabaseDAO {
 
 	public boolean insertPayment(Payment p) {
     	try {
-	        
+    		conn = ds.getConnection();
+
 	    	String query = "INSERT INTO PAYMENTS (id, type, amount, card_number, card_name, card_cvc) VALUES (?, ?, ?, ?, ?, ?)";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,p.getId());
@@ -258,7 +273,7 @@ public enum DatabaseDAO {
 	        }
 	        
 	        stmnt.executeUpdate();
-	        
+	        conn.close();
 	        return true;	       
 	        
 		} catch (SQLException e) {
@@ -269,6 +284,7 @@ public enum DatabaseDAO {
 
 	public boolean updatePayment(Payment p) {
     	try {
+    		conn = ds.getConnection();
 
 	    	String query = "UPDATE PAYMENTS SET type = ?, amount = ?, card_number = ?, card_name = ? , card_cvc = ? WHERE id = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
@@ -287,6 +303,7 @@ public enum DatabaseDAO {
 	        stmnt.setInt(6,p.getId());
 
 	        stmnt.executeUpdate();
+	        conn.close();
 	        return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -297,11 +314,13 @@ public enum DatabaseDAO {
 
 	public boolean paymentExits(int id) {
     	try {
+    		conn = ds.getConnection();
+
 	    	String query = "SELECT * FROM PAYMENTS WHERE ID = ?";
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
-	        
+	        conn.close();
 	        if(rs.next())
 	        {
 	        	return rs.getRow() == 1;

@@ -45,7 +45,8 @@ public class OrderResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response putOrder(JAXBElement<Order> o) {
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response putOrder(Order o) {
 		
 		Response res;
 		
@@ -54,23 +55,22 @@ public class OrderResource {
 		if(dbOrder != null) {
 	
 			// Can only update order if status is placed.
-			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)) {
-				
-				Order newb = o.getValue();
-				
+			//TODO: We need this to happen even if status is in othere conditions for barista 
+		
+//			if(dbOrder.getStatus().equals(Order.STATUS_PLACED)) {
+								
 				// Safety value manipulation.
-				newb.calculateCost();
-				newb.setId(this.id);
-				newb.setStatus(dbOrder.getStatus());
+				o.calculateCost();
+				o.setId(this.id);
 				
-				DatabaseDAO.instance.updateOrder(this.id, newb);
-				newb = DatabaseDAO.instance.getOrder(this.id, uriInfo);
-				res = Response.ok(newb).build();
-			}
-			else
-			{
-				return Response.status(Response.Status.PRECONDITION_FAILED).build();
-			}
+				DatabaseDAO.instance.updateOrder(this.id, o);
+				o = DatabaseDAO.instance.getOrder(this.id, uriInfo);
+				res = Response.ok(o).build();
+//			}
+//			else
+//			{
+//				return Response.status(Response.Status.PRECONDITION_FAILED).build();
+//			}
 		} else {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}

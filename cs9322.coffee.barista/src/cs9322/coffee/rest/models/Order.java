@@ -95,41 +95,10 @@ public class Order {
 		
 	}
 
-	@XmlTransient
-	public String getAvaliableOptions() {
-		// Can get at anytime.
-		List<String> temp = new ArrayList<String>();
-		
-		temp.add("GET");
-		
-		// Can amend order only when it has just been placed.
-		if(this.status.equals(Order.STATUS_PLACED)) { 
-			temp.add("PUT");
-			temp.add("DELETE");
-		}
-		return temp.toString().substring(1, temp.toString().length()-1);
+	public boolean isFinished() {
+		return status.equals(STATUS_SERVED) || status.equals(STATUS_CANCELLED);
 	}
-	
-	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
-		
-		this.link.clear();
-		
-		// Get base URI and create needed links.
-		URI myURI = aUriInfo.getBaseUri();
-		
-		// Always be able to get order until deleted.
-		String selfURI = myURI.toString()+"orders/"+this.id;
-		link.add(new Link("self", selfURI));
-		
-		if(!this.status.equals(Order.STATUS_CANCELLED)) {
-		// Payment details can be retrieved at any time except when order canceled.
-		String paymentURI = myURI.toString()+"payment/"+this.id;
-		link.add(new Link("payment", paymentURI));
-		}
-		
-	}
-	
-	
+
 	public List<Link> getLinks() {
 		return link;
 	}
