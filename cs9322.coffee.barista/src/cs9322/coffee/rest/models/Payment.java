@@ -1,9 +1,12 @@
 package cs9322.coffee.rest.models;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 public class Payment {
@@ -12,7 +15,10 @@ public class Payment {
     private String type; //CASH or CARD
     private double amount;
     private List<Link> link; //ie self and parent
-    private CardDetail card;
+    
+    private String cardName;
+	private String cardNumber;
+	private String cardCVC;
     
     public static String CASH = "CASH";
     public static String CARD = "CARD";
@@ -22,7 +28,10 @@ public class Payment {
     	this.id = -1;
 		this.type = "";
 		this.amount = -1;
-		this.card = null;
+		this.cardName = "";
+		this.cardNumber = "";
+		this.cardCVC = "";
+		this.link = new ArrayList<Link>();
     }
     
 	public Payment(int id, String type, double amount, String card_number,
@@ -31,7 +40,9 @@ public class Payment {
 		this.type = type;
 		this.amount = amount;
 		if(type.equals(CARD)) {
-			this.card = new CardDetail(card_name, card_number, card_cvc);
+			this.cardName = card_name;
+			this.cardNumber = card_number;
+			this.cardCVC = card_cvc;
 		}
 		
 		this.link = new ArrayList<Link>();
@@ -54,19 +65,48 @@ public class Payment {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public List<Link> getLink() {
+	public List<Link> getLinks() {
 		return link;
 	}
-	public void setLink(List<Link> link) {
+	public void setLinks(List<Link> link) {
 		this.link = link;
 	}
-	public CardDetail getCard() {
-		return card;
-	}
-	public void setCard(CardDetail card) {
-		this.card = card;
+	
+	public String getCardName() {
+		return this.cardName;
 	}
 	
- 
+	public void setCardName(String aCardName) {
+		this.cardName = aCardName;
+	}
+	
+	public String getCardNumber() {
+		return this.cardNumber;
+	}
+	
+	public void setCardNumber(String aCardNumber) {
+		this.cardNumber = aCardNumber;
+	}
+	
+	public String getCardCVC() {
+		return this.cardCVC;
+	}
+	
+	public void setCardCVC(String aCardCVC) {
+		this.cardCVC = aCardCVC;
+	}
+	
+	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
+		
+		this.link.clear();
+		
+		// Get base URI and create needed links.
+		URI myURI = aUriInfo.getBaseUri();
+				
+		// Always be able to get order until deleted.
+		String selfURI = myURI.toString()+"payment/"+this.id;
+		link.add(new Link("self", selfURI));
+		
+	}
    
 }

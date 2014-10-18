@@ -2,17 +2,14 @@ package cs9322.coffee.rest.models;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
 @XmlRootElement
 public class Order {
-
 	
 	private int id;
     private String drink;
@@ -84,11 +81,55 @@ public class Order {
 		this.status = status;
 	}
 
+	public void calculateCost() {
+		cost = 0;
+		if(!drink.isEmpty()) {
+			cost += 3.5;
+		}
+		cost += 0.3 * additions.size();
+		
+	}
+
 	public void addAddition(String addition) {
 		additions.add(addition);
 		
 	}
 
+	@XmlTransient
+	public String getAvaliableOptions() {
+		// Can get at anytime.
+		List<String> temp = new ArrayList<String>();
+		
+		temp.add("GET");
+		
+		// Can amend order only when it has just been placed.
+		if(this.status.equals(Order.STATUS_PLACED)) { 
+			temp.add("PUT");
+			temp.add("DELETE");
+		}
+		return temp.toString().substring(1, temp.toString().length()-1);
+	}
+	
+	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
+		
+		this.link.clear();
+		
+		// Get base URI and create needed links.
+		URI myURI = aUriInfo.getBaseUri();
+		
+		// Always be able to get order until deleted.
+		String selfURI = myURI.toString()+"orders/"+this.id;
+		link.add(new Link("self", selfURI));
+		
+		if(!this.status.equals(Order.STATUS_CANCELLED)) {
+		// Payment details can be retrieved at any time except when order canceled.
+		String paymentURI = myURI.toString()+"payment/"+this.id;
+		link.add(new Link("payment", paymentURI));
+		}
+		
+	}
+	
+	
 	public List<Link> getLinks() {
 		return link;
 	}

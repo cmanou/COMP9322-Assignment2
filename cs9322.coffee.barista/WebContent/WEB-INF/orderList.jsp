@@ -26,7 +26,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="payment" items="${payments}">
+						<c:forEach var="order" items="${orders}">
 							<tr>
 								<td>${order.drink}</td>
 								<td>${order.additions}</td>
