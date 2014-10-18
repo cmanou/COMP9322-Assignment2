@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	    private List<String> additions;
 	    private double cost;
 	    private String status; //PLACED, PAID, CANCELLED, SERVED
+	    private String paymentStatus; //PAID UNPAID
 	    private List<Link> link; //ie self and parent
 	    
 	  
@@ -19,21 +20,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 	    public static final String STATUS_CANCELLED = "CANCELLED";
 	    public static final String STATUS_SERVED = "SERVED";
 	    public static final String STATUS_PREPARING = "PREPARING";
-
+	    
+	    public static final String PAID = "PAID";
+	    public static final String UNPAID = "UNPAID";
+	    
 	    public Order(){
 	    	additions = new ArrayList<String>();
 	    	cost = 0;
 	    	link = new ArrayList<Link>();
+	    	this.status = Order.STATUS_PLACED;
+	    	this.paymentStatus = Order.UNPAID;
 	    }
 	    
-	    public Order(int id, String drink, List<String> additions, double cost, String status){
+	    public Order(int id, String drink, List<String> additions, double cost, String status, String paymentStatus){
 	    	this.id = id;
 	    	this.drink = drink;
 	    	this.additions = additions;
 	    	this.cost = cost;
 	    	this.status = status;
 	    	this.link = new ArrayList<Link>();
-
+	    	this.paymentStatus = paymentStatus;
 	    }
 
 	    public int getId() {
@@ -88,5 +94,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 		public void setLinks(List<Link> links) {
 			this.link= links;
 		}
-	
+		
+		public String getPaymentStatus() {
+			return paymentStatus;
+		}
+
+		public void setPaymentStatus(String paymentStatus) {
+			this.paymentStatus = paymentStatus;
+		}
 	}
