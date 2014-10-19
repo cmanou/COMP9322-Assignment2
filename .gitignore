@@ -14,3 +14,5 @@ hs_err_pid*
 cs9322.coffee.rest/WebContent/META-INF/context.xml
 
 cs9322.coffee.rest/.classpath
+
+cs9322.coffee.rest/WebContent/WEB-INF/coffee.db
