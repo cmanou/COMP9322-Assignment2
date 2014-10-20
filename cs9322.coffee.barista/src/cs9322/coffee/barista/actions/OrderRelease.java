@@ -23,7 +23,7 @@ public class OrderRelease extends Action {
 		Client client = Client.create();
 		WebResource service = client.resource(getBaseURI());
 
-		ClientResponse cresponse = service.path("rest").path("orders").path(id).accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+		ClientResponse cresponse = service.path("rest").path("orders").path(id).accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
 		logger.info("Status = " + cresponse.getStatus());
 
 		Order o = null;
@@ -32,7 +32,7 @@ public class OrderRelease extends Action {
 			
 			o.setStatus(Order.STATUS_SERVED);
 			ClientResponse presponse = service.path("rest").path("orders").path(id)
-					.type(MediaType.APPLICATION_XML).put(ClientResponse.class, o);
+					.type(MediaType.APPLICATION_XML).header("key", "barista").put(ClientResponse.class, o);
 
 			logger.info("PUT Status = " + presponse.getStatus());
 

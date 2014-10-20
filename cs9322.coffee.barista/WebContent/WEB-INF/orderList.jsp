@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<meta http-equiv="refresh" content="10" >
     
     
 <jsp:include page="/header.jsp">
@@ -12,6 +14,8 @@
     <div class="information pure-g">
         <div class="pure-u-1-1">
             <div class="l-box">
+        	<a href="/cs9322.coffee.barista/barista" class="pure-button pure-button-primary">Refresh</a>
+        
 			<c:choose>
 				<c:when test="${not empty orders}">
 					<h3 class="information-head">Orders</h3>

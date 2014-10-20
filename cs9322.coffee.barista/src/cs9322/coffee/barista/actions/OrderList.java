@@ -25,12 +25,12 @@ public class OrderList extends Action {
 		Client client = Client.create();
 		WebResource service = client.resource(getBaseURI());
 
-		ClientResponse cresponse = service.path("rest").path("orders").accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+		ClientResponse cresponse = service.path("rest").path("orders").accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
 		OrdersList o = null;
 		if(cresponse.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
 			o = cresponse.getEntity(OrdersList.class);
 			request.setAttribute("orders", o.getOrdersList());
-			logger.info("Orders COunt" + o.getOrdersList().toString());
+//			logger.info("Orders COunt" + o.getOrdersList().toString());
 		}
 				
 		return "/WEB-INF/orderList.jsp";

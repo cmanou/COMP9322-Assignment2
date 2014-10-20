@@ -27,7 +27,7 @@ public class OrderGet extends Action {
 		Client client = Client.create();
 		WebResource service = client.resource(getBaseURI());
 
-		ClientResponse cresponse = service.path("rest").path("orders").path(id).accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+		ClientResponse cresponse = service.path("rest").path("orders").path(id).accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
 		logger.info("Status = " + cresponse.getStatus());
 
 		Order o = null;

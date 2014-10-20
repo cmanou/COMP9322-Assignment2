@@ -96,17 +96,5 @@ public class Payment {
 		this.cardCVC = aCardCVC;
 	}
 	
-	public void generateLinks(UriInfo aUriInfo) { //CALL before you want to display
-		
-		this.link.clear();
-		
-		// Get base URI and create needed links.
-		URI myURI = aUriInfo.getBaseUri();
-				
-		// Always be able to get order until deleted.
-		String selfURI = myURI.toString()+"payment/"+this.id;
-		link.add(new Link("self", selfURI));
-		
-	}
    
 }
