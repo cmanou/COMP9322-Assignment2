@@ -334,6 +334,22 @@ public enum DatabaseDAO {
     	return false;
 	}
 	
+	public boolean removePayment(int id) {
+    	try {
+    		conn = ds.getConnection();
+	    	String query = "DELETE FROM PAYMENTS WHERE ID = ?";
+	        PreparedStatement stmnt = conn.prepareStatement(query);
+	        stmnt.setInt(1,id);
+	        stmnt.executeUpdate();
+	        conn.close();
+	        return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+    	return false;
+	}
+	
 	public void close() 
 	{
 		try {
