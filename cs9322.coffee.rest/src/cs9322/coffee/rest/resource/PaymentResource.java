@@ -78,6 +78,7 @@ public class PaymentResource {
 		Order relatedOrder = DatabaseDAO.instance.getOrder(this.id, uriInfo);
 		if(relatedOrder != null 
 				&& (relatedOrder.getStatus().equals(Order.STATUS_PLACED) 
+						|| relatedOrder.getStatus().equals(Order.STATUS_PREPARING)
 						|| relatedOrder.getStatus().equals(Order.STATUS_SERVED))) {
 			
 			// Check that payment record doesnt exist .i.e. payment hasnt been made.
@@ -92,7 +93,6 @@ public class PaymentResource {
 				
 				// Update order status.
 				relatedOrder.setPaymentStatus(Order.PAID);
-				relatedOrder.setStatus(Order.PAID);
 				DatabaseDAO.instance.updateOrder(this.id, relatedOrder);
 				
 				// Get links.

@@ -1,6 +1,8 @@
 
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.client.urlconnection.HttpURLConnectionFactory;
+import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
@@ -46,7 +50,9 @@ public class Controller extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 			// Set web resource base uri.
-			String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
+//			String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
+//			String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
+			String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";
 									
 			// Get action.
 			String aAction = request.getParameter("aAction");
@@ -77,8 +83,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -113,8 +126,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -149,8 +169,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -185,8 +212,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -225,8 +259,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -265,8 +306,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 				    // Specify request attributes and invoke 
@@ -316,7 +364,15 @@ public class Controller extends HttpServlet {
 	{
 		// Create client with default configurations.
 		ClientConfig defaultConfig = new DefaultClientConfig();
-		Client myClient = Client.create(defaultConfig);
+		Client myClient = new Client(new URLConnectionClientHandler(
+		        new HttpURLConnectionFactory() {
+		    @Override
+		    public HttpURLConnection getHttpURLConnection(URL url)
+		            throws IOException {
+		        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+		    }
+		}), defaultConfig);
+
 		
 		WebResource ordersResource = myClient.resource(myBaseURI);
 		
@@ -347,8 +403,9 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 			// Set web resource base uri.
-			String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
-			
+//		String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
+//		String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
+		String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";			
 			// Get action.
 			String aAction = request.getParameter("aAction");
 				
@@ -387,7 +444,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
@@ -454,8 +519,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+	
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 					// Create put body content.
@@ -497,8 +569,15 @@ public class Controller extends HttpServlet {
 					
 					// Create client with default configurations.
 					ClientConfig defaultConfig = new DefaultClientConfig();
-					Client myClient = Client.create(defaultConfig);
-					
+					Client myClient = new Client(new URLConnectionClientHandler(
+					        new HttpURLConnectionFactory() {
+					    @Override
+					    public HttpURLConnection getHttpURLConnection(URL url)
+					            throws IOException {
+					        return (HttpURLConnection) url.openConnection(java.net.Proxy.NO_PROXY);
+					    }
+					}), defaultConfig);
+
 					WebResource ordersResource = myClient.resource(myBaseURI);
 					
 					// Create put body content.
