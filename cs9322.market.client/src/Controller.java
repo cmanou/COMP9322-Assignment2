@@ -23,12 +23,9 @@ import au.edu.unsw.sltf.client.CurrencyConvertMarketDataServiceStub.CurrencyConv
 import au.edu.unsw.sltf.client.SummaryMarketDataFaultException;
 import au.edu.unsw.sltf.client.SummaryMarketDataServiceStub;
 import au.edu.unsw.sltf.client.SummaryMarketDataServiceStub.*;
-import au.edu.unsw.sltf.services.DownloadFile;
-import au.edu.unsw.sltf.services.DownloadFileResponse;
-import au.edu.unsw.sltf.services.ImportDownloadFaultException;
-import au.edu.unsw.sltf.services.ImportDownloadServicesStub;
-import au.edu.unsw.sltf.services.ImportMarketData;
-import au.edu.unsw.sltf.services.ImportMarketDataResponse;
+import au.edu.unsw.sltf.client.ImportDownloadFaultException;
+import au.edu.unsw.sltf.client.ImportDownloadServicesStub;
+import au.edu.unsw.sltf.client.ImportDownloadServicesStub.*;
 
 
 /**
@@ -125,9 +122,9 @@ public class Controller extends HttpServlet {
             
             try {
     	        // Generate request.
-                ImportDownloadServicesStub myStub = new ImportDownloadServicesStub();
-    	        
+            	ImportDownloadServicesStub myStub = new ImportDownloadServicesStub();
                 DownloadFile myDF = new DownloadFile();
+                
                 myDF.setEventSetId(eventSetId);
             
                 DownloadFileResponse resp = myStub.downloadFile(myDF);

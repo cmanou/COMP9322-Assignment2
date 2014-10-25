@@ -107,7 +107,7 @@
      */
     public SummaryMarketDataServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://cmanou.srvr:9000/axis2/services/SummaryMarketDataService" );
+                    this(configurationContext,"http://gyan898.srvr.cse.unsw.edu.au/axis2/services/SummaryMarketDataService/" );
                 
     }
 
@@ -116,7 +116,7 @@
      */
     public SummaryMarketDataServiceStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://cmanou.srvr:9000/axis2/services/SummaryMarketDataService" );
+                    this("http://gyan898.srvr.cse.unsw.edu.au/axis2/services/SummaryMarketDataService/" );
                 
     }
 
@@ -289,7 +289,7 @@
         }
         return false;
     }
-     //http://localhost:8080/axis2/services/SummaryMarketDataService
+     //http://gyan898.srvr.cse.unsw.edu.au/axis2/services/SummaryMarketDataService/
         public static class SummaryMarketData
         implements org.apache.axis2.databinding.ADBBean{
         

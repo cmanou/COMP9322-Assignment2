@@ -10,7 +10,7 @@ package au.edu.unsw.sltf.client;
 
 public class SummaryMarketDataFaultException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1410517409268L;
+    private static final long serialVersionUID = 1414212518587L;
     
     private au.edu.unsw.sltf.client.SummaryMarketDataServiceStub.SummaryMarketDataFault faultMessage;
 

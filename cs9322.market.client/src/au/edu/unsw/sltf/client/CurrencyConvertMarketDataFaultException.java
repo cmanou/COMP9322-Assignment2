@@ -10,7 +10,7 @@ package au.edu.unsw.sltf.client;
 
 public class CurrencyConvertMarketDataFaultException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1410518761233L;
+    private static final long serialVersionUID = 1414212562296L;
     
     private au.edu.unsw.sltf.client.CurrencyConvertMarketDataServiceStub.CurrencyConvertMarketDataFault faultMessage;
 

@@ -6,13 +6,13 @@
  * by the Apache Axis2 version: 1.6.2  Built on : Apr 17, 2012 (05:33:49 IST)
  */
 
-package au.edu.unsw.sltf.services;
+package au.edu.unsw.sltf.client;
 
 public class ImportDownloadFaultException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1410357307387L;
+    private static final long serialVersionUID = 1414212598622L;
     
-    private au.edu.unsw.sltf.services.ImportDownloadFault faultMessage;
+    private au.edu.unsw.sltf.client.ImportDownloadServicesStub.ImportDownloadFault faultMessage;
 
     
         public ImportDownloadFaultException() {
@@ -32,11 +32,11 @@ public class ImportDownloadFaultException extends java.lang.Exception{
         }
     
 
-    public void setFaultMessage(au.edu.unsw.sltf.services.ImportDownloadFault msg){
+    public void setFaultMessage(au.edu.unsw.sltf.client.ImportDownloadServicesStub.ImportDownloadFault msg){
        faultMessage = msg;
     }
     
-    public au.edu.unsw.sltf.services.ImportDownloadFault getFaultMessage(){
+    public au.edu.unsw.sltf.client.ImportDownloadServicesStub.ImportDownloadFault getFaultMessage(){
        return faultMessage;
     }
 }
