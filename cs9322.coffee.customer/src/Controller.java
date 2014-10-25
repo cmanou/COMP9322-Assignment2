@@ -282,7 +282,7 @@ public class Controller extends HttpServlet {
 					{
 						Order receivedOrder = reply.getEntity(Order.class);
 						
-						if(receivedOrder.getStatus().equals(Order.STATUS_PLACED))
+						if(receivedOrder.getStatus().equals(Order.STATUS_PLACED) || receivedOrder.getStatus().equals(Order.STATUS_PREPARING))
 						{
 							request.setAttribute("myOrder", receivedOrder);
 							

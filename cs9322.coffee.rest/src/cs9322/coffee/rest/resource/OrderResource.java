@@ -125,10 +125,10 @@ public class OrderResource {
 		if(aOrder != null)
 		{
 			// Check that order can be deleted.
-			if(aOrder.getStatus().equals(Order.STATUS_PLACED) || aOrder.getStatus().equals(Order.PAID)) {
+			if(aOrder.getStatus().equals(Order.STATUS_PLACED) || aOrder.getStatus().equals(Order.STATUS_PREPARING)) {
 				
 				// Delete payment if exists.
-				if(aOrder.getStatus().equals(Order.PAID))
+				if(aOrder.getPaymentStatus().equals(Order.PAID))
 				{
 					DatabaseDAO.instance.removePayment(this.id);
 				}
