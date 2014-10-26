@@ -26,52 +26,46 @@
         <xsl:for-each select="$lines[position() &gt; 1]">
             <event>
             <xsl:variable name="lineItems" select="fn:getTokens(.)" as="xs:string+" />
-<!-- #RIC,Date[G],Time[G],GMT Offset,Type,Price,Volume,Bid Price,Bid Size,Ask Price,Ask Size -->
 
             <xsl:for-each select="$lineItems">
-                <xsl:variable name="pos" select="position()" />
-                <xsl:choose>
-                  <xsl:when test ="$pos = 1">
-                    <stock><xsl:value-of select ="." /></stock>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 2">
-                    <date><xsl:value-of select ="." /></date>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 3">
-                    <time><xsl:value-of select ="." /></time>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 4">
-                    <gmt><xsl:value-of select ="." /></gmt>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 5">
-                    <offset><xsl:value-of select ="." /></offset>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 6">
-                    <type><xsl:value-of select ="." /></type>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 7">
-                    <price><xsl:value-of select ="." /></price>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 8">
-                    <volume><xsl:value-of select ="." /></volume>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 9">
-                    <bidPrice><xsl:value-of select ="." /></bidPrice>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 10">
-                    <bidSize><xsl:value-of select ="." /></bidSize>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 11">
-                    <askPrice><xsl:value-of select ="." /></askPrice>
-                  </xsl:when>
-                  <xsl:when test ="$pos = 12">
-                    <askSize><xsl:value-of select ="." /></askSize>
-                  </xsl:when>
-                  <xsl:otherwise>
-                  </xsl:otherwise>
+              <xsl:variable name="pos" select="position()" />
+              <xsl:choose>
+                <xsl:when test ="$pos = 1">
+                  <stock><xsl:value-of select ="." /></stock>
+                </xsl:when>
+                <xsl:when test ="$pos = 2">
+                  <date><xsl:value-of select ="." /></date>
+                </xsl:when>
+                <xsl:when test ="$pos = 3">
+                  <time><xsl:value-of select ="." /></time>
+                </xsl:when>
+                <xsl:when test ="$pos = 4">
+                  <gmtOffset><xsl:value-of select ="." /></gmtOffset>
+                </xsl:when>
+                <xsl:when test ="$pos = 5">
+                  <type><xsl:value-of select ="." /></type>
+                </xsl:when>
+                <xsl:when test ="$pos = 6">
+                  <price><xsl:value-of select ="." /></price>
+                </xsl:when>
+                <xsl:when test ="$pos = 7">
+                  <volume><xsl:value-of select ="." /></volume>
+                </xsl:when>
+                <xsl:when test ="$pos = 8">
+                  <bidPrice><xsl:value-of select ="." /></bidPrice>
+                </xsl:when>
+                <xsl:when test ="$pos = 9">
+                  <bidSize><xsl:value-of select ="." /></bidSize>
+                </xsl:when>
+                <xsl:when test ="$pos = 10">
+                  <askPrice><xsl:value-of select ="." /></askPrice>
+                </xsl:when>
+                <xsl:when test ="$pos = 11">
+                  <askSize><xsl:value-of select ="." /></askSize>
+                </xsl:when>
+                <xsl:otherwise>
+                </xsl:otherwise>
                 </xsl:choose>
-
-
             </xsl:for-each>
 
           </event>
