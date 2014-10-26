@@ -9,8 +9,6 @@
 
 import org.apache.axis2.transport.http.HTTPConstants;
 
-        
-
         /*
         *  ImportDownloadServicesStub java implementation
         */
@@ -125,7 +123,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
      */
     public ImportDownloadServicesStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
+                    this(configurationContext,"http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
                 
     }
 
@@ -134,7 +132,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
      */
     public ImportDownloadServicesStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
+                    this("http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
                 
     }
 
@@ -436,7 +434,7 @@ import org.apache.axis2.transport.http.HTTPConstants;
         }
         return false;
     }
-     //http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/
+     //http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/
         public static class ImportDownloadFaultType
         implements org.apache.axis2.databinding.ADBBean{
         

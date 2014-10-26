@@ -16,10 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.axis2.databinding.types.URI;
 
-import au.edu.unsw.sltf.client.CurrencyConvertMarketDataFaultException;
-import au.edu.unsw.sltf.client.CurrencyConvertMarketDataServiceStub;
-import au.edu.unsw.sltf.client.CurrencyConvertMarketDataServiceStub.CurrencyConvertMarketData;
-import au.edu.unsw.sltf.client.CurrencyConvertMarketDataServiceStub.CurrencyConvertMarketDataResponse;
+import au.edu.unsw.sltf.client.CurrencyConvertFaultException;
+import au.edu.unsw.sltf.client.CurrencyConvertServiceStub;
+import au.edu.unsw.sltf.client.CurrencyConvertServiceStub.CurrenyConvertMarketData;
+import au.edu.unsw.sltf.client.CurrencyConvertServiceStub.CurrenyConvertMarketDataResponse;
+import au.edu.unsw.sltf.client.CurrencyConvertServiceStub.*;
 import au.edu.unsw.sltf.client.SummaryMarketDataFaultException;
 import au.edu.unsw.sltf.client.SummaryMarketDataServiceStub;
 import au.edu.unsw.sltf.client.SummaryMarketDataServiceStub.*;
@@ -203,13 +204,13 @@ public class Controller extends HttpServlet {
 			try {
 
     	        // Generate request.
-                CurrencyConvertMarketDataServiceStub myStub = new CurrencyConvertMarketDataServiceStub();
-                CurrencyConvertMarketData mySMD = new CurrencyConvertMarketData();
+				CurrencyConvertServiceStub myStub = new CurrencyConvertServiceStub();
+                CurrenyConvertMarketData mySMD = new CurrenyConvertMarketData();
 
                 mySMD.setEventSetId(eventSetId);
                 mySMD.setTargetCurrency(targetCurrency);
                 
-                CurrencyConvertMarketDataResponse resp = myStub.currencyConvertMarketData(mySMD);
+                CurrenyConvertMarketDataResponse resp = myStub.currenyConvertMarketData(mySMD);
               
                 String eventSetID = resp.getEventSetId();
                
@@ -218,7 +219,7 @@ public class Controller extends HttpServlet {
                 request.setAttribute("currencyResponse", result);
                 
                 nextPage = "currencyConvert.jsp";
-			} catch (CurrencyConvertMarketDataFaultException e) {
+			} catch (CurrencyConvertFaultException e) {
                 String faultMsg = e.getFaultMessage().getFaultMessage();
                 String faultType = e.getFaultMessage().getFaultType().toString();
                 String totalResponse = "<h4>Error:</h4>"+ faultType+" - "+faultMsg;
