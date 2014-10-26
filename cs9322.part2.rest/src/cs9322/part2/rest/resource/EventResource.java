@@ -117,9 +117,9 @@ public class EventResource {
 				System.out.println("here: "+myXSLT.getAbsolutePath());
 				FileUtils.copyURLToFile(myURL, myCSVFile);
 				
-				TransformerFactory factory = TransformerFactory.newInstance();
+				TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
 		        Source xslt = new StreamSource(myXSLT);
-		        Transformer transformer = factory.newTransformer();
+		        Transformer transformer = factory.newTransformer(xslt);
 		        System.out.println("here: "+myCSVFile.getAbsolutePath());
 		        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
 
