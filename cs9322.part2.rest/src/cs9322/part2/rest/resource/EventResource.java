@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -107,7 +109,10 @@ public class EventResource {
 			{				
 				URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
 				File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
-				File myXSLT = new File("csv.xslt");
+				
+				String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv.xslt");
+				
+				File myXSLT = new File(fullPath);
 				
 				System.out.println("here: "+myXSLT.getAbsolutePath());
 				FileUtils.copyURLToFile(myURL, myCSVFile);
@@ -118,14 +123,18 @@ public class EventResource {
 		        System.out.println("here: "+myCSVFile.getAbsolutePath());
 		        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
 
-		        Source text = new StreamSource(myCSVFile);
-		        transformer.transform(text, new StreamResult(File.createTempFile("myTempOutput", ".xml")));
-				
+		        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
+
+		        StringWriter writer = new StringWriter();
+		        StreamResult result = new StreamResult(writer);
+		        
+		        transformer.transform(text, result);
+		    
 				// Save List to context.
 				//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
 				
-				//Response.ok().build();
-				return Response.status(Response.Status.OK).build();
+
+				return Response.ok(writer.toString()).build();
 			
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
