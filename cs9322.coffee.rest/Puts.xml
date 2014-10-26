@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payment>
+<id>2</id>
+<type>CARD</type>
+<amount>200.04</amount>
+<cardName>Bob</cardName>
+<cardNumber>2202020202</cardNumber>
+<cardCVC>123</cardCVC>
+</payment>
