@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
@@ -57,58 +58,245 @@ public class EventResource {
 		this.requestHeaders = aHeaders;
 		this.servletContext = aServletContext;
 	}
-	
-	// Produces XML or JSON output for a client 'program'			
+			
 	@GET
-	//@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Response getEvent() {
+	@Path("/xml")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getEventXML() {
 		
-		try 
-		{				
-			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
-			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
-			
-			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv-json.xsl");
-			
-			File myXSLT = new File(fullPath);
-			
-			System.out.println("here: "+myXSLT.getAbsolutePath());
-			FileUtils.copyURLToFile(myURL, myCSVFile);
-			
-			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-	        Source xslt = new StreamSource(myXSLT);
-	        Transformer transformer = factory.newTransformer(xslt);
-	        System.out.println("here: "+myCSVFile.getAbsolutePath());
-	        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
-
-	        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
-
-	        StringWriter writer = new StringWriter();
-	        StreamResult result = new StreamResult(writer);
-	        
-	        transformer.transform(text, result);
-	    
-			// Save List to context.
-			//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
-			
-
-			return Response.ok(writer.toString()).build();
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
 		
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		
-		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+	}
+	
+	@GET
+	@Path("/trade/xml")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getEventTradeXML() {
+		
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv-trades.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+	}
+	
+	@GET
+	@Path("/trade/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEventTradeJSON() {
+		
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv-json-trades.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+	}
+	
+	@GET
+	@Path("/quote/xml")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getEventQuoteXML() {
+		
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv-quotes.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+	}
+	
+	@GET
+	@Path("/quote/json")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getEventQuoteJSON() {
+		
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv-json-quotes.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+	}
+	
+	@GET
+	@Path("/trade/totalprice")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getEventTradeTotalPrice() {
+		
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		
+		if(found)
+		{
+			String result = this.generateData("csv.xsl");
+			
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+			
+			return Response.ok(result).build();
+		} 
+		else
+		{
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
 	}
 	
 	@PUT
@@ -134,62 +322,74 @@ public class EventResource {
 		
 		if(found)
 		{
-			return Response.status(Response.Status.PRECONDITION_FAILED).build();
+			return Response.status(Response.Status.OK).build();
 		} 
 		else
 		{
 			// Store id and create XML to send back //
-			//myEventSetIdList.add(eventSetId);
+			myEventSetIdList.add(eventSetId);
 			
-			// Download csv and convert to XML
-			try 
-			{				
-				URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
-				File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
-				
-				String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv.xsl");
-				
-				File myXSLT = new File(fullPath);
-				
-				System.out.println("here: "+myXSLT.getAbsolutePath());
-				FileUtils.copyURLToFile(myURL, myCSVFile);
-				
-				TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-		        Source xslt = new StreamSource(myXSLT);
-		        Transformer transformer = factory.newTransformer(xslt);
-		        System.out.println("here: "+myCSVFile.getAbsolutePath());
-		        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
-
-		        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
-
-		        StringWriter writer = new StringWriter();
-		        StreamResult result = new StreamResult(writer);
-		        
-		        transformer.transform(text, result);
-		    
-				// Save List to context.
-				//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
-				
-
-				return Response.ok(writer.toString()).build();
+			String result = this.generateData("csv.xsl");
 			
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformerConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(result.equals("ERROR"))
+			{
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 			
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			// Save List to context.
+			this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
+			
+			return Response.ok(result).status(Response.Status.CREATED).build();
 		}
 		
 	}
+	
+	private String generateData(String aXSLTFileName)
+	{
+		// Download csv and convert 
+		try 
+		{				
+			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+this.eventSetId+".csv");
+			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
+			
+			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/"+aXSLTFileName);
+			
+			File myXSLT = new File(fullPath);
+			
+			
+			FileUtils.copyURLToFile(myURL, myCSVFile);
+			
+			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+	        Source xslt = new StreamSource(myXSLT);
+	        Transformer transformer = factory.newTransformer(xslt);
+	        
+	        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
+
+	        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
+
+	        StringWriter writer = new StringWriter();
+	        StreamResult result = new StreamResult(writer);
+	        
+	        transformer.transform(text, result);
+	    
+			return writer.toString();
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return "ERROR";
+	}
+	
 	
 }
