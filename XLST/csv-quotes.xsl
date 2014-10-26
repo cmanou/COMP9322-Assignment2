@@ -25,7 +25,7 @@
         <eventList>
         <xsl:for-each select="$lines[position() &gt; 1]">
           <xsl:variable name="lineItems" select="fn:getTokens(.)" as="xs:string+" />
-  <xsl:if test="$lineItems[5] = 'Quote'">
+          <xsl:if test="$lineItems[5] = 'Quote'">
             <event>
 
             <xsl:for-each select="$lineItems">
