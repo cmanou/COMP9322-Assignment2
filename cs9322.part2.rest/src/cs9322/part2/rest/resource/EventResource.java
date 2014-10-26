@@ -67,26 +67,11 @@ public class EventResource {
 		{				
 			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
 			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
-			
-			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv-json.xsl");
-			
-			File myXSLT = new File(fullPath);
-			
-			System.out.println("here: "+myXSLT.getAbsolutePath());
 			FileUtils.copyURLToFile(myURL, myCSVFile);
-			
-			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-	        Source xslt = new StreamSource(myXSLT);
-	        Transformer transformer = factory.newTransformer(xslt);
-	        System.out.println("here: "+myCSVFile.getAbsolutePath());
-	        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
 
-	        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
+			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv-json.xsl");
 
-	        StringWriter writer = new StringWriter();
-	        StreamResult result = new StreamResult(writer);
-	        
-	        transformer.transform(text, result);
+			StringWriter writer = csvXSLTConvert(myCSVFile, fullPath);
 	    
 			// Save List to context.
 			//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
@@ -110,6 +95,8 @@ public class EventResource {
 		
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
+
+
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_XML)
@@ -146,26 +133,11 @@ public class EventResource {
 			{				
 				URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
 				File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
+				FileUtils.copyURLToFile(myURL, myCSVFile);
 				
 				String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv.xsl");
 				
-				File myXSLT = new File(fullPath);
-				
-				System.out.println("here: "+myXSLT.getAbsolutePath());
-				FileUtils.copyURLToFile(myURL, myCSVFile);
-				
-				TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
-		        Source xslt = new StreamSource(myXSLT);
-		        Transformer transformer = factory.newTransformer(xslt);
-		        System.out.println("here: "+myCSVFile.getAbsolutePath());
-		        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
-
-		        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
-
-		        StringWriter writer = new StringWriter();
-		        StreamResult result = new StreamResult(writer);
-		        
-		        transformer.transform(text, result);
+				StringWriter writer = csvXSLTConvert(myCSVFile, fullPath);
 		    
 				// Save List to context.
 				//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
@@ -190,6 +162,26 @@ public class EventResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 		
+	}
+	
+	private StringWriter csvXSLTConvert(File myCSVFile, String xsltPath) throws IOException, TransformerConfigurationException, TransformerException {
+		File myXSLT = new File(xsltPath);
+		
+		System.out.println("here: "+myXSLT.getAbsolutePath());
+		
+		TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+		Source xslt = new StreamSource(myXSLT);
+		Transformer transformer = factory.newTransformer(xslt);
+		System.out.println("here: "+myCSVFile.getAbsolutePath());
+		transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
+
+		Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
+
+		StringWriter writer = new StringWriter();
+		StreamResult result = new StreamResult(writer);
+		
+		transformer.transform(text, result);
+		return writer;
 	}
 	
 }
