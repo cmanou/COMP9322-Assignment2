@@ -63,15 +63,52 @@ public class EventResource {
 	//@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getEvent() {
 		
-	/*	
-		Order o = DatabaseDAO.instance.getOrder(eventSetId, uriInfo);
-		if(o != null) {
-			return Response.ok(o).build();
-		} else {
-			return Response.status(Response.Status.NOT_FOUND).build();
+		try 
+		{				
+			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
+			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
+			
+			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv-json.xsl");
+			
+			File myXSLT = new File(fullPath);
+			
+			System.out.println("here: "+myXSLT.getAbsolutePath());
+			FileUtils.copyURLToFile(myURL, myCSVFile);
+			
+			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+	        Source xslt = new StreamSource(myXSLT);
+	        Transformer transformer = factory.newTransformer(xslt);
+	        System.out.println("here: "+myCSVFile.getAbsolutePath());
+	        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
+
+	        Source text = new StreamSource(new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml")));
+
+	        StringWriter writer = new StringWriter();
+	        StreamResult result = new StreamResult(writer);
+	        
+	        transformer.transform(text, result);
+	    
+			// Save List to context.
+			//this.servletContext.setAttribute("eventSetIdList", myEventSetIdList);
+			
+
+			return Response.ok(writer.toString()).build();
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	*/
-		return Response.status(Response.Status.PRECONDITION_FAILED).build();
+		
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	@PUT
@@ -110,7 +147,7 @@ public class EventResource {
 				URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+eventSetId+".csv");
 				File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
 				
-				String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv.xslt");
+				String fullPath = servletContext.getRealPath("/WEB-INF/xslts/csv.xsl");
 				
 				File myXSLT = new File(fullPath);
 				

@@ -4,7 +4,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   version="2.0" exclude-result-prefixes="xs fn">
 
-<xsl:output indent="yes" encoding="US-ASCII" />
+<xsl:output method="text" indent="no"/>
 
 <xsl:param name="pathToCSV" select="'file:///c:/csv.csv'" />
 
@@ -22,55 +22,58 @@
     <xsl:when test="unparsed-text-available($pathToCSV)">
         <xsl:variable name="csv" select="unparsed-text($pathToCSV)" />
         <xsl:variable name="lines" select="tokenize($csv, '\n')" as="xs:string+" />
-        <eventList>
+        <xsl:text>{ "events": [ </xsl:text>
         <xsl:for-each select="$lines[position() &gt; 1]">
-            <event>
+          <xsl:if test=". != ''">
             <xsl:variable name="lineItems" select="fn:getTokens(.)" as="xs:string+" />
-
+            <xsl:if test="position() != 1" >
+              <xsl:text>,</xsl:text>
+            </xsl:if>
+            <xsl:text>{</xsl:text>
             <xsl:for-each select="$lineItems">
               <xsl:variable name="pos" select="position()" />
               <xsl:choose>
                 <xsl:when test ="$pos = 1">
-                  <stock><xsl:value-of select ="." /></stock>
+                  <xsl:text> "stock": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 2">
-                  <date><xsl:value-of select ="." /></date>
+                  <xsl:text> "date": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 3">
-                  <time><xsl:value-of select ="." /></time>
+                  <xsl:text> "time": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 4">
-                  <gmtOffset><xsl:value-of select ="." /></gmtOffset>
+                  <xsl:text> "gmtOffset": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 5">
-                  <type><xsl:value-of select ="." /></type>
+                  <xsl:text> "type": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 6">
-                  <price><xsl:value-of select ="." /></price>
+                  <xsl:text> "price": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 7">
-                  <volume><xsl:value-of select ="." /></volume>
+                  <xsl:text> "volume": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 8">
-                  <bidPrice><xsl:value-of select ="." /></bidPrice>
+                  <xsl:text> "bidPrice": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 9">
-                  <bidSize><xsl:value-of select ="." /></bidSize>
+                  <xsl:text> "bidSize": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 10">
-                  <askPrice><xsl:value-of select ="." /></askPrice>
+                  <xsl:text> "askPrice": "</xsl:text><xsl:value-of select ="." /><xsl:text>",</xsl:text>
                 </xsl:when>
                 <xsl:when test ="$pos = 11">
-                  <askSize><xsl:value-of select ="." /></askSize>
+                  <xsl:text> "askSize": "</xsl:text><xsl:value-of select ="." /><xsl:text>"</xsl:text>
                 </xsl:when>
                 <xsl:otherwise>
                 </xsl:otherwise>
                 </xsl:choose>
             </xsl:for-each>
-
-          </event>
+            <xsl:text> }</xsl:text>
+          </xsl:if>
         </xsl:for-each>
-      </eventList>
+      <xsl:text>]}</xsl:text>
     </xsl:when>
     <xsl:otherwise>
         <xsl:text>Cannot locate : </xsl:text><xsl:value-of select="$pathToCSV" />
@@ -79,4 +82,3 @@
 </xsl:template>
 
 </xsl:stylesheet>
-
