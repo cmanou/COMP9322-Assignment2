@@ -7,6 +7,8 @@
  */
         package au.edu.unsw.sltf.client;
 
+import org.apache.axis2.transport.http.HTTPConstants;
+
         
 
         /*
@@ -172,7 +174,7 @@
               _operationClient.getOptions().setAction("urn:importMarketData");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
-              
+              _operationClient.getOptions().setProperty(HTTPConstants.CHUNKED, false);
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
               
@@ -300,7 +302,8 @@
               _operationClient.getOptions().setAction("urn:downloadFile");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
-              
+              _operationClient.getOptions().setProperty(HTTPConstants.CHUNKED, false);
+
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
               
