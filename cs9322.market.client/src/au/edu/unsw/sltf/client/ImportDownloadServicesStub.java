@@ -7,7 +7,7 @@
  */
         package au.edu.unsw.sltf.client;
 
-        
+import org.apache.axis2.transport.http.HTTPConstants;
 
         /*
         *  ImportDownloadServicesStub java implementation
@@ -123,7 +123,7 @@
      */
     public ImportDownloadServicesStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
+                    this(configurationContext,"http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
                 
     }
 
@@ -132,7 +132,7 @@
      */
     public ImportDownloadServicesStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
+                    this("http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/" );
                 
     }
 
@@ -172,7 +172,7 @@
               _operationClient.getOptions().setAction("urn:importMarketData");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
-              
+              _operationClient.getOptions().setProperty(HTTPConstants.CHUNKED, false);
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
               
@@ -300,7 +300,8 @@
               _operationClient.getOptions().setAction("urn:downloadFile");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
-              
+              _operationClient.getOptions().setProperty(HTTPConstants.CHUNKED, false);
+
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
               
@@ -433,7 +434,7 @@
         }
         return false;
     }
-     //http://gyan898.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/
+     //http://vcas720.srvr.cse.unsw.edu.au/axis2/services/ImportDownloadServices/
         public static class ImportDownloadFaultType
         implements org.apache.axis2.databinding.ADBBean{
         

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<eventList>
+   <event>
+      <stock>ABCD</stock>
+      <date>05-JUL-2001</date>
+      <time>08:12:22.966</time>
+      <gmtOffset>+2</gmtOffset>
+      <type>Quote</type>
+      <price>59.82</price>
+      <volume/>
+      <bidPrice/>
+      <bidSize/>
+      <askPrice/>
+      <askSize/>
+   </event>
+   <event>
+      <stock>ABCD</stock>
+      <date>12-JUL-2001</date>
+      <time>08:21:59.642</time>
+      <gmtOffset>+2</gmtOffset>
+      <type>Quote</type>
+      <price>58.6</price>
+      <volume/>
+      <bidPrice/>
+      <bidSize/>
+      <askPrice/>
+      <askSize/>
+   </event>
+</eventList>

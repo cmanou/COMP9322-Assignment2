@@ -58,29 +58,19 @@
 			 conversion rate as of 20th August 2014
 		</p>
 		<h5>Parameters</h5>
-		<p>All parameters marked with a '*' must be specified.</p>
         <table>
         	<tr>
            		<th>Name</th>
            		<th>Type</th>
-           		<th>Description</th>
-           		<th>Default</th>
-           		<th width="110px" >Example/Sample</th>
            	</tr>
            	<tr>
            		<td>eventSetId*</td>
            		<td>String</td>
-           		<td>An opaque "handle" or reference that is the output of one of the other operations.<br />
-           			- Of the pattern "^9322-[0-9]+$"</td>
-				<td> </td>
-				<td>9322-20148610616930</td>
+
 			</tr>
 			<tr>
            		<td>targetCurrency*</td>
            		<td>String</td>
-           		<td>The shortened currency code for the currency you want to convert to.</td>
-				<td> </td>
-				<td>HKD</td>
 			</tr>
         </table>
 		
@@ -90,18 +80,10 @@
         	<tr>
            		<th>Name</th>
            		<th>Type</th>
-           		<th>Description</th>
-           		<th>Default</th>
-           		<th>Example/s</th>
            	</tr>
            	<tr>
            		<td>eventSetId</td>
            		<td>String</td>
-           		<td>An opaque "handle" or reference that is the output of the 'currencyConvert' operation.<br />
-           			- Of the pattern "^9322-[0-9]+$".
-           		</td>
-				<td> </td>
-				<td>9322-201481195811595</td>
 			</tr>
 			
         </table>
@@ -111,45 +93,21 @@
         <table>
         	<tr>
            		<th>Fault Type</th>
-           		<th>Fault Message</th>
-           		<th>Cause</th>
-           		<th>Resolution</th>
            	</tr>
            	<tr>
            		<td>InvalidEventSetId</td>
-           		<td>Invalid Event Id Format!</td>
-           		<td>Event handle does not match the pattern '^9322-[0-9]+$'</td>
-           		<td>Check your event set id and try again.</td>
-			</tr>
-			<tr>
-           		<td>InvalidEventSetId</td>
-           		<td>Event File does not exist!</td>
-           		<td>Service could not find the file that belongs to this handle.</td>
-           		<td>Make sure you use the 'Import' operation before 'download'.</td>
 			</tr>
 			<tr>
            		<td>InvalidTargetCurrency</td>
-           		<td>Invalid Currency/Not In Conversion</td>
-           		<td>The target currency You entered is not valid.</td>
-           		<td>Please check spelling or try another currency</td>
 			</tr>
 			<tr>
            		<td>InvalidMarketData</td>
-           		<td>Market File has already been converted</td>
-           		<td>Service can not reconvert a currency which has already been converted.</td>
-           		<td>Please use the original file</td>
 			</tr>
 			<tr>
            		<td>ProgramError</td>
-           		<td>Can Not Create New File!</td>
-           		<td>Internal error the output file could not be saved.</td>
-           		<td>Please Contact Support.</td>
 			</tr>  
 			<tr>
            		<td>ProgramError</td>
-           		<td>Error Parsing Market Data</td>
-           		<td>Internal error the input file can not be processed.</td>
-           		<td>Please try again or re import the original csv.</td>
 			</tr>      
 		</table>
         
@@ -185,9 +143,7 @@
        
        	<hr />
        	<br />
-       	<h4>Download Service WSDL</h4>
-        <p><a href="/axis2/services/CurrencyConvertMarketDataService?wsdl" >Download WSDL</a></p>
-        
+
       </div> <!--  Content Div End -->
       
     </div>

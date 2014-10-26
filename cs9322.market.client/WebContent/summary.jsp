@@ -176,10 +176,7 @@
         
        
        	<hr />
-       	<br />
-       	<h4>Download Service WSDL</h4>
-        <p><a href="/axis2/services/SummaryMarketDataService?wsdl" >Download WSDL</a></p>
-        
+
       </div> <!--  Content Div End -->
       
     </div>
