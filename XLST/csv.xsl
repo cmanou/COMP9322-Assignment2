@@ -22,9 +22,9 @@
     <xsl:when test="unparsed-text-available($pathToCSV)">
         <xsl:variable name="csv" select="unparsed-text($pathToCSV)" />
         <xsl:variable name="lines" select="tokenize($csv, '\n')" as="xs:string+" />
-        <tradeList>
+        <eventList>
         <xsl:for-each select="$lines[position() &gt; 1]">
-            <trade>
+            <event>
             <xsl:variable name="lineItems" select="fn:getTokens(.)" as="xs:string+" />
 <!-- #RIC,Date[G],Time[G],GMT Offset,Type,Price,Volume,Bid Price,Bid Size,Ask Price,Ask Size -->
 
@@ -74,9 +74,9 @@
 
             </xsl:for-each>
 
-            </trade>
+          </event>
         </xsl:for-each>
-        </tradeList>
+      </eventList>
     </xsl:when>
     <xsl:otherwise>
         <xsl:text>Cannot locate : </xsl:text><xsl:value-of select="$pathToCSV" />
