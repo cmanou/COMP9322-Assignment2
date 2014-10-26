@@ -64,8 +64,9 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getEventXML() {
 		
+
 		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");	
 		
 		if(myEventSetIdList == null){
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -298,6 +299,8 @@ public class EventResource {
 		}
 
 	}
+
+
 	
 	@PUT
 	@Produces(MediaType.APPLICATION_XML)
@@ -329,8 +332,10 @@ public class EventResource {
 			// Store id and create XML to send back //
 			myEventSetIdList.add(eventSetId);
 			
+
 			String result = this.generateData("csv.xsl");
-			
+
+			// Download csv and convert to XML
 			if(result.equals("ERROR"))
 			{
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -390,6 +395,5 @@ public class EventResource {
 	
 		return "ERROR";
 	}
-	
 	
 }
