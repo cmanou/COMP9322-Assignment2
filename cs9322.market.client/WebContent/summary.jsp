@@ -139,34 +139,13 @@
 
         <table>
         	<tr>
-           		<th>Fault Type</th>
-           		<th>Fault Message</th>
-           		<th>Cause</th>
-           		<th>Resolution</th>
+           		<th>Fault</th>
            	</tr>
            	<tr>
            		<td>InvalidEventSetId</td>
-           		<td>Invalid Event Id Format!</td>
-           		<td>Event handle does not match the pattern '^9322-[0-9]+$'</td>
-           		<td>Check your event set id and try again.</td>
-			</tr>
-			<tr>
-           		<td>InvalidEventSetId</td>
-           		<td>Event File does not exist!</td>
-           		<td>Service could not find the file that belongs to this handle.</td>
-           		<td>Make sure you use the 'Import' operation before 'download'.</td>
 			</tr>
 			<tr>
            		<td>ProgramError</td>
-           		<td>Invalid Line in Event File!</td>
-           		<td>There was a bad line in the csv.</td>
-           		<td>Please try again or re-import the file. If it continues contact support</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Invalid Date in Event File!</td>
-           		<td>Service could not parse one of the dates to conduct summary of csv file.</td>
-           		<td>Please try again or re-import the file. If it continues contact support</td>
 			</tr>
         </table>
         

@@ -65,170 +65,117 @@
 			to the given parameters, and produces another Market Data file to store it inside the system. 
 				The filter conditions are specified by the input parameters.
 		</p>
-		<h5>Parameters</h5>
-		<p>All parameters marked with a '*' must be specified.</p>
-        <table>
-        	<tr>
-           		<th>Name</th>
-           		<th>Type</th>
-           		<th>Description</th>
-           		<th>Default</th>
-           		<th width="110px" >Example/Sample</th>
-           	</tr>
-           	<tr>
-           		<td>sec*</td>
-           		<td>String</td>
-           		<td>The security code of the financial instrument (i.e., stock) to be matched. <br />- Should be in upper case, alphabetics only and 3-4 characters in length.</td>
-				<td> </td>
-				<td>KLW</td>
-			</tr>
-			<tr>
-				<td>startDate*</td>
-				<td>String</td>
-				<td>Starting date/time to match (inclusive). 
-					<br />- In Format "yyyy-MM-dd'T'HH:mm:ss.SSS".
-					<br />- xsd:dateTime. 
-				</td>
-				<td> </td>
-				<td>2007-01-25T08:00:00.000</td>
-			</tr>
-			<tr>
-				<td>endDate*</td>
-				<td>String</td>
-				<td>Ending date/time to match (inclusive). 
-					<br />- In Format "yyyy-MM-dd'T'HH:mm:ss.SSS".
-					<br />- xsd:dateTime. 
-				</td>
-				<td> </td>
-				<td>2007-01-25T08:30:00.200</td>
-			</tr>
-			<tr>
-				<td>dataSourceURL*</td>
-				<td>String</td>
-				<td>This is a URL that points to the input Market Data file.<br />- Normal URL format.</td>
-        		<td> </td>
-        		<td>http://www.cse.unsw.edu.au/~hpaik/9322/assignments/common/files_csv_spec/MarketData02.csv</td>
-        	</tr>
-        </table>
+		<div class="cf">
+		<div style="width:50%;float:left;">
+			<h5>Parameters</h5>
+	        <table>
+	        	<tr>
+	           		<th>Name</th>
+	           		<th>Type</th>
+	           		<th>Description</th>
+	           	</tr>
+	           	<tr>
+	           		<td>sec*</td>
+	           		<td>String</td>
+	           		<td>The security code of the financial instrument (i.e., stock) to be matched. <br />- Should be in upper case, alphabetics only and 3-4 characters in length.</td>
+				</tr>
+				<tr>
+					<td>startDate*</td>
+					<td>String</td>
+					<td>Starting date/time to match (inclusive). 
+						<br />- In Format "yyyy-MM-dd'T'HH:mm:ss.SSS".
+						<br />- xsd:dateTime. 
+					</td>
+				</tr>
+				<tr>
+					<td>endDate*</td>
+					<td>String</td>
+					<td>Ending date/time to match (inclusive). 
+						<br />- In Format "yyyy-MM-dd'T'HH:mm:ss.SSS".
+						<br />- xsd:dateTime. 
+					</td>
+				</tr>
+				<tr>
+					<td>dataSourceURL*</td>
+					<td>String</td>
+					<td>This is a URL that points to the input Market Data file.<br />- Normal URL format.</td>
+	        	</tr>
+	        </table>
+		</div>
+		
+			<div style="width:50%;float:left;">
 		
 		<h5>Return Value/s</h5>
 
-        <table>
+        <table style="width:100%;">
         	<tr>
            		<th>Name</th>
            		<th>Type</th>
            		<th>Description</th>
-           		<th>Default</th>
-           		<th>Example/s</th>
            	</tr>
            	<tr>
            		<td>eventSetId</td>
            		<td>String</td>
            		<td>A handle that refers to a (output) filtered Market Data file. <br />- Should be in the pattern "^9322-[0-9]+$"</td>
-				<td> </td>
-				<td>9322-20148610616930</td>
 			</tr>
 			
         </table>
-        
 		<h5>Fault Responses</h5>
 
-        <table>
+        <table style="width:100%;">
         	<tr>
            		<th>Fault Type</th>
-           		<th>Fault Message</th>
-           		<th>Cause</th>
-           		<th>Resolution</th>
            	</tr>
            	<tr>
            		<td>InvalidSECCode</td>
-           		<td>Invalid Sec code format!</td>
-           		<td>Entered sec code does not match the "^[A-Z]{3,4}$" pattern.</td>
-           		<td>Check your sec code and try again.</td>
-			</tr>
-			<tr>
-           		<td>InvalidSECCode</td>
-           		<td>No Code or Time Matches for criteria in the Market Data file!</td>
-           		<td>Entered Sec code match for given time was not found in .csv file</td>
-           		<td>Re-create request and try again.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Start date/time is not before end date/time!</td>
-           		<td>Entered start date/time is after end date/time. Logiclly incorrect.</td>
-           		<td>Check that start date/time is before end date/time and try again.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Private folder structure not created!</td>
-           		<td>Service could not create interal file structure for request.</td>
-           		<td>Nothing you can do. Admin would have been notified, please try again later.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Error in reading input file OR creating/writing result file!</td>
-           		<td>Service could not create or write to interal file.</td>
-           		<td>Check correctness of dataSourceURL, If Correct, Nothing you can do. Admin would have been notified, please try again later.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Bad Date format for parsing!</td>
-           		<td>Service could not construct valid date/time from passed in .csv file entry date/time format.</td>
-           		<td>Check that date and time fields in .csv are of proper format and retry.</td>
 			</tr>
 			<tr>
            		<td>InvalidURL</td>
-           		<td>Invalid URI: must be a .csv file!</td>
-           		<td>Entered URL does not point to a .csv file i.e. does not end with .csv</td>
-           		<td>Check URL and try again.</td>
 			</tr>
 			<tr>
-           		<td>InvalidURL</td>
-           		<td>URL is not of proper strucutre!</td>
-           		<td>Url cannot be parsed into service due to structure</td>
-           		<td>Check URL and try again.</td>
+           		<td>ProgramError</td>
 			</tr>
         </table>
+                </div>
+                </div>
         
         <h5>Try-it!</h5>
         
         <form method="post" action="Controller">
-        	<table>
+        <table style="width:100%;">
         		<tr>
         			<th colspan="2" >Parameters</th>
         			<th id="responseFieldImport" >Response</th>
         		</tr>
         		<tr>
-        			<td>sec</td>
-        			<td><input type="text" name="aSec" /></td>
+        			<td style="width:100px;">sec</td>
+        			<td style="width:300px;padding-right:10px;"><input type="text" name="aSec" style="width:100%;" /></td>
         			<td rowspan="5">
         				${importResponse}
         			 </td>
         		</tr>
         		<tr>
         			<td>startDate</td>
-        			<td><input type="text" name="aStartDate" /></td>
+        			<td style="width:300px;padding-right:10px;"><input type="text" name="aStartDate" style="width:100%;" /></td>
         		</tr>
         		<tr>
         			<td>endDate</td>
-        			<td><input type="text" name="aEndDate" /></td>
+        			<td style="width:300px;padding-right:10px;"><input type="text" name="aEndDate" style="width:100%;" /></td>
         		</tr>
         		<tr>
         			<td>dataSourceURL</td>
-        			<td><input type="text" name="aDataSourceURI" /></td>
+        			<td style="width:300px;padding-right:10px;"><input type="text" name="aDataSourceURI" style="width:100%;" /></td>
         		</tr>
         		<tr>
         			<td></td>
         			<td>
         				<input type="hidden" name="action" value="requestImport" />
-        				<input type="submit" value="Go!"/>
+        				<input type="submit" value="Go!" style="width:100%;"/>
         			</td>
         		</tr>
         	</table>
         </form>
-                
 		<hr />
-		<br />
 		<br />
 		
 		<!-- ////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -239,16 +186,14 @@
 			The downloadFile operation makes Market Data files that are outputs of 'importMarketData' operation
 			 accessible to users over the internet via URL download.
 		</p>
-		
+				<div class="cf">
+		<div style="width:50%;float:left;">
 		<h5>Parameters</h5>
-		<p>All parameters marked with a '*' must be specified.</p>
-        <table>
+        <table style="width:100%;">
         	<tr>
            		<th>Name</th>
            		<th>Type</th>
            		<th>Description</th>
-           		<th>Default</th>
-           		<th width="110px" >Example/Sample</th>
            	</tr>
            	<tr>
            		<td>eventSetId*</td>
@@ -256,83 +201,54 @@
            		<td>An opaque "handle" or reference that is the output of the 'importMarketData' operation.<br />
            			- Of the pattern "^9322-[0-9]+$".
            		</td>
-				<td> </td>
-				<td>9322-201481195811595</td>
 			</tr>
         </table>
-		
+		</div>
+		<div style="width:50%;float:left;">
 		<h5>Return Value/s</h5>
 
-        <table>
+        <table style="width:100%;">
         	<tr>
            		<th>Name</th>
            		<th>Type</th>
            		<th>Description</th>
-           		<th>Default</th>
-           		<th>Example/s</th>
            	</tr>
            	<tr>
            		<td>dataURL</td>
            		<td>String</td>
            		<td>This is a http:// URL that points to the Market Data file referenced by the 'eventSetId' input parameter. A user can download the Market Data file contents using this URL (e.g. by navigating to this URL using a Web browser).</td>
-				<td> </td>
-				<td>http://localhost:50000/cjze477_ass1/public/9322-2014811104337431.csv</td>
 			</tr>
 			
         </table>
-        
+        </div>
+		<div style="width:100%;float:left;">
 		<h5>Fault Responses</h5>
 
-        <table>
+        <table style="width:100%;">
         	<tr>
            		<th>Fault Type</th>
-           		<th>Fault Message</th>
-           		<th>Cause</th>
-           		<th>Resolution</th>
            	</tr>
-           	<tr>
-           		<td>ProgramError</td>
-           		<td>Invalid Event Id Format!</td>
-           		<td>Event handle does not match the pattern '^9322-[0-9]+$'</td>
-           		<td>Check handle format and try again.</td>
+			<tr>
+           		<td>InvalidEventSetId</td>
 			</tr>
 			<tr>
            		<td>ProgramError</td>
-           		<td>Event File does not exist!</td>
-           		<td>Service could not find the file that belongs to this handle.</td>
-           		<td>Make sure you use the 'Import' operation before 'download'.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Private folder structure not created!</td>
-           		<td>Service could not create interal file structure for request.</td>
-           		<td>Nothing you can do. Admin would have been notified, please try again later.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Copy file error!</td>
-           		<td>Service could not fully create a public version of the file.</td>
-           		<td>Nothing you can do. Admin would have been notified, please try again later.</td>
-			</tr>
-			<tr>
-           		<td>ProgramError</td>
-           		<td>Bad output URI!</td>
-           		<td>Service could not construct a valid URI to give to the client.</td>
-           		<td>Nothing you can do. Admin would have been notified, please try again later.</td>
 			</tr>
         </table>
-        
+        </div>
+        </div>
         <h5>Try-it!</h5>
         
         <form method="post" action="Controller">
-        	<table>
+        <table style="width:100%;">
         		<tr>
         			<th colspan="2" >Parameters</th>
         			<th id="responseFieldDownload" >Response</th>
+        			
         		</tr>
         		<tr>
-        			<td>eventSetId</td>
-        			<td><input type="text" name="aEventSetId" /></td>
+        			<td style="width:100px;">eventSetId</td>
+        			<td style="width:300px;padding-right:10px;"><input type="text" name="aEventSetId" style="width:100%;" /></td>
         			<td rowspan="5">
         				${downloadResponse}
         			 </td>
@@ -341,16 +257,13 @@
         			<td></td>
         			<td>
         				<input type="hidden" name="action" value="requestDownload" />
-        				<input type="submit" value="Go!"/>
+        				<input type="submit" value="Go!" style="width:100%;"/>
         			</td>
         		</tr>
         	</table>
         </form>
        	
-       	<hr />
-       	<br />
-       	<h4>Download Service WSDL</h4>
-        <p><a href="ImportDownloadServices.wsdl" >Download WSDL</a></p>
+	<hr>
         
       </div> <!--  Content Div End -->
       
