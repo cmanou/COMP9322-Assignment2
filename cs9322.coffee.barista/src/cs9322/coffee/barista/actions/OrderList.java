@@ -51,7 +51,8 @@ public class OrderList extends Action {
 			request.setAttribute("orders", o.getOrdersList());
 //			logger.info("Orders COunt" + o.getOrdersList().toString());
 		}
-				
+		request.setAttribute("response", cresponse.getStatusInfo());
+
 		return "/WEB-INF/orderList.jsp";
 	} 
 

@@ -52,7 +52,8 @@ public class OrderGet extends Action {
 			logger.info("Drink = " + o.getDrink());
 
 		}
-		
+		request.setAttribute("response", cresponse.getStatusInfo());
+
 		request.setAttribute("order", o);
 		return "/WEB-INF/orderGet.jsp";
 	} 

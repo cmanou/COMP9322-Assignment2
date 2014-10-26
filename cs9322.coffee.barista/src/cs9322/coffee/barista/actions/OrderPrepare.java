@@ -18,6 +18,7 @@ import com.sun.jersey.client.urlconnection.HttpURLConnectionFactory;
 import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 
 import cs9322.coffee.rest.models.Order;
+import cs9322.coffee.rest.models.OrdersList;
 
 public class OrderPrepare extends Action {
 	static Logger logger = Logger.getLogger(OrderGet.class.getName());
@@ -51,10 +52,23 @@ public class OrderPrepare extends Action {
 					.type(MediaType.APPLICATION_XML).header("key", "barista").put(ClientResponse.class, o);
 
 			logger.info("PUT Status = " + presponse.getStatus());
+			request.setAttribute("response", presponse.getStatusInfo());
+
 
 		}
-		Action redirect = new OrderList();
-		return redirect.execute(request, response);
+
+
+		
+		cresponse = service.path("rest").path("orders").accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
+		OrdersList ol = null;
+		logger.info("Status: " + cresponse.getStatus());
+		if(cresponse.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+			ol = cresponse.getEntity(OrdersList.class);
+			request.setAttribute("orders", ol.getOrdersList());
+//			logger.info("Orders COunt" + o.getOrdersList().toString());
+		}
+
+		return "/WEB-INF/orderList.jsp";
 	}
 
 }

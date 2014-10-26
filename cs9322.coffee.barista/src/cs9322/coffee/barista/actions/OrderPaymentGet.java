@@ -48,6 +48,8 @@ public class OrderPaymentGet extends Action {
 			logger.info("Payment = " + p.getAmount());
 
 		}
+
+		request.setAttribute("response", cresponse.getStatusInfo());
 		request.setAttribute("id", id);
 		request.setAttribute("payment", p);
 		return "/WEB-INF/paymentGet.jsp";

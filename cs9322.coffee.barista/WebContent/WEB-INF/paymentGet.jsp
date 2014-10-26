@@ -20,6 +20,16 @@
     <div class="information pure-g">
         <div class="pure-u-1-1">
             <div class="l-box">
+            
+            <c:if test="${not empty response}">
+			<aside>
+		        <p>
+					${response.statusCode} - ${response.reasonPhrase}
+		        </p>
+		    </aside>
+		    <br>
+            </c:if>
+            
 			<c:choose>
 				<c:when test="${not empty payment}">
 					<h3 class="information-head">Payment - Order ${id}</h3>
