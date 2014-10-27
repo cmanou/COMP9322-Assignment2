@@ -65,22 +65,7 @@ public class EventResource {
 	public Response getEventXML() {
 		
 
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");	
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -105,22 +90,7 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getEventTradeXML() {
 		
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -145,22 +115,7 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEventTradeJSON() {
 		
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -179,28 +134,15 @@ public class EventResource {
 		}
 
 	}
+
+
 	
 	@GET
 	@Path("/quote/xml")
 	@Produces(MediaType.APPLICATION_XML)
 	public Response getEventQuoteXML() {
 		
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -225,22 +167,7 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getEventQuoteJSON() {
 		
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -265,22 +192,7 @@ public class EventResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getEventTradeTotalPrice() {
 		
-		// Check to see if app variable exists
-		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
-		
-		if(myEventSetIdList == null){
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		
-		// Check if event id already exists in list.
-		boolean found = false;
-		for(String item : myEventSetIdList)
-		{
-			if(item.equals(this.eventSetId))
-			{
-				found = true;
-			}
-		}
+		boolean found = findEvent();
 		
 		if(found)
 		{
@@ -396,6 +308,7 @@ public class EventResource {
 		return "ERROR";
 	}
 	
+
 	private String generateDataFromXML(String aXSLTFileName1, String aXSLTFileName2)
 	{
 		
@@ -448,5 +361,27 @@ public class EventResource {
 		}
 	
 		return "ERROR";
+		
 	}
+
+	private boolean findEvent() {
+		// Check to see if app variable exists
+		List<String> myEventSetIdList = (List<String>) this.servletContext.getAttribute("eventSetIdList");
+		
+		if(myEventSetIdList == null){
+			return false;
+		}
+		
+		// Check if event id already exists in list.
+		boolean found = false;
+		for(String item : myEventSetIdList)
+		{
+			if(item.equals(this.eventSetId))
+			{
+				found = true;
+			}
+		}
+		return found;
+	}
+
 }
