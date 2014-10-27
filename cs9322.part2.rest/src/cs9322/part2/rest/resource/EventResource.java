@@ -3,10 +3,13 @@ package cs9322.part2.rest.resource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -281,7 +284,8 @@ public class EventResource {
 	{
 		// Download csv and convert 
 		try 
-		{				
+		{		
+			
 			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+this.eventSetId+".csv");
 			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
 			
@@ -289,8 +293,7 @@ public class EventResource {
 			
 			File myXSLT = new File(fullPath);
 			
-			
-			FileUtils.copyURLToFile(myURL, myCSVFile);
+			urlToFile(myURL, myCSVFile);
 			
 			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
 	        Source xslt = new StreamSource(myXSLT);
@@ -323,6 +326,45 @@ public class EventResource {
 	
 		return "ERROR";
 	}
+
+	private void urlToFile(URL myURL, File myCSVFile) throws IOException,
+			FileNotFoundException {
+		//Way to read file from url using proxy
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+
+		// read this file into InputStream
+		inputStream = myURL.openConnection(Proxy.NO_PROXY).getInputStream();
+ 
+		// write the inputStream to a FileOutputStream
+		outputStream =  new FileOutputStream(myCSVFile);
+ 
+		int read = 0;
+		byte[] bytes = new byte[1024];
+ 
+		while ((read = inputStream.read(bytes)) != -1) {
+			outputStream.write(bytes, 0, read);
+		}
+ 
+		System.out.println("Done!");
+ 
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (outputStream != null) {
+			try {
+				// outputStream.flush();
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+ 
+		}
+	}
 	
 
 	private String generateDataFromXML(String aXSLTFileName1, String aXSLTFileName2)
@@ -330,6 +372,7 @@ public class EventResource {
 		
 		try 
 		{	
+			
 			// Download csv and convert to XML //
 			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+this.eventSetId+".csv");
 			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
@@ -339,7 +382,7 @@ public class EventResource {
 			File myXSLT = new File(fullPath);
 			
 			
-			FileUtils.copyURLToFile(myURL, myCSVFile);
+			urlToFile(myURL, myCSVFile);
 			
 			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
 	        Source xslt = new StreamSource(myXSLT);
