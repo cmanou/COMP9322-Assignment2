@@ -26,9 +26,7 @@
         <xsl:for-each select="$lines[position() &gt; 1]">
           <xsl:if test=". != ''">
             <xsl:variable name="lineItems" select="fn:getTokens(.)" as="xs:string+" />
-            <xsl:if test="position() != 1" >
               <xsl:text>,</xsl:text>
-            </xsl:if>
             <xsl:text>{</xsl:text>
             <xsl:for-each select="$lineItems">
               <xsl:variable name="pos" select="position()" />

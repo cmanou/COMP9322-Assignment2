@@ -31,13 +31,7 @@
 
             <xsl:if test="$lineItems[5] = 'Quote'">
 
-            <xsl:if test="position() != 1" >
-              <xsl:variable name="lineItems" select="$lines[position() - 1]" as="xs:string+" />
-
-              <xsl:if test="position() != 1" >
-                <xsl:text>,</xsl:text>
-              </xsl:if>
-            </xsl:if>
+            <xsl:text>,</xsl:text>
 
 
             <xsl:text>{</xsl:text>

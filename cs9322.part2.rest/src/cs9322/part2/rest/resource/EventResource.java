@@ -138,6 +138,8 @@ public class EventResource {
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 			
+			result = result.replace("[ ,{", "[{");
+			
 			return Response.ok(result).build();
 		} 
 		else
@@ -189,6 +191,8 @@ public class EventResource {
 			{
 				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
+
+			result = result.replace("[ ,{", "[{");
 			
 			return Response.ok(result).build();
 		} 

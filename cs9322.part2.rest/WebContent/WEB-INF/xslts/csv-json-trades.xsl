@@ -29,9 +29,8 @@
 
             <xsl:if test="$lineItems[5] = 'Trade'">
 
-            <xsl:if test="position() != 1" >
               <xsl:text>,</xsl:text>
-            </xsl:if>
+
             <xsl:text>{</xsl:text>
             <xsl:for-each select="$lineItems">
               <xsl:variable name="pos" select="position()" />
