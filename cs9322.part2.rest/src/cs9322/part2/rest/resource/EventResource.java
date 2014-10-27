@@ -84,7 +84,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv.xsl");
+			String result = this.generateDataFromCSV("csv.xsl");
 			
 			if(result.equals("ERROR"))
 			{
@@ -124,7 +124,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv-trades.xsl");
+			String result = this.generateDataFromCSV("csv-trades.xsl");
 			
 			if(result.equals("ERROR"))
 			{
@@ -164,7 +164,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv-json-trades.xsl");
+			String result = this.generateDataFromCSV("csv-json-trades.xsl");
 			
 			if(result.equals("ERROR"))
 			{
@@ -204,7 +204,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv-quotes.xsl");
+			String result = this.generateDataFromCSV("csv-quotes.xsl");
 			
 			if(result.equals("ERROR"))
 			{
@@ -244,7 +244,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv-json-quotes.xsl");
+			String result = this.generateDataFromCSV("csv-json-quotes.xsl");
 			
 			if(result.equals("ERROR"))
 			{
@@ -284,7 +284,7 @@ public class EventResource {
 		
 		if(found)
 		{
-			String result = this.generateData("csv.xsl");
+			String result = this.generateDataFromXML("csv-trades.xsl", "totalprice.xq");
 			
 			if(result.equals("ERROR"))
 			{
@@ -333,12 +333,12 @@ public class EventResource {
 			myEventSetIdList.add(eventSetId);
 			
 
-			String result = this.generateData("csv.xsl");
+			String result = this.generateDataFromCSV("csv.xsl");
 
 			// Download csv and convert to XML
 			if(result.equals("ERROR"))
 			{
-				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build(); 
 			}
 			
 			// Save List to context.
@@ -349,7 +349,7 @@ public class EventResource {
 		
 	}
 	
-	private String generateData(String aXSLTFileName)
+	private String generateDataFromCSV(String aXSLTFileName)
 	{
 		// Download csv and convert 
 		try 
@@ -396,4 +396,57 @@ public class EventResource {
 		return "ERROR";
 	}
 	
+	private String generateDataFromXML(String aXSLTFileName1, String aXSLTFileName2)
+	{
+		
+		try 
+		{	
+			// Download csv and convert to XML //
+			URL myURL = new URL("http://vcas720.srvr.cse.unsw.edu.au/"+this.eventSetId+".csv");
+			File myCSVFile = File.createTempFile("myTempCSV", ".csv"); 
+			
+			String fullPath = servletContext.getRealPath("/WEB-INF/xslts/"+aXSLTFileName1);
+			
+			File myXSLT = new File(fullPath);
+			
+			
+			FileUtils.copyURLToFile(myURL, myCSVFile);
+			
+			TransformerFactory factory = new net.sf.saxon.TransformerFactoryImpl();
+	        Source xslt = new StreamSource(myXSLT);
+	        Transformer transformer = factory.newTransformer(xslt);
+	        
+	        transformer.setParameter("pathToCSV", myCSVFile.getAbsolutePath());
+	        
+	        File myXMLFile = new File(servletContext.getRealPath("/WEB-INF/xslts/dummy.xml"));
+	        
+	        Source text = new StreamSource(myXMLFile);
+
+	        StringWriter writer = new StringWriter();
+	        StreamResult result = new StreamResult(writer);
+	        
+	        transformer.transform(text, result);
+	        
+	        // Get converted xml and apply xquery //
+	        
+	        // TODO  apply xquery to xml.
+	        
+			return "Put result string here";
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return "ERROR";
+	}
 }
