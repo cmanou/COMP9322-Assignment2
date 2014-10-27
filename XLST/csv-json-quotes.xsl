@@ -22,6 +22,8 @@
     <xsl:when test="unparsed-text-available($pathToCSV)">
         <xsl:variable name="csv" select="unparsed-text($pathToCSV)" />
         <xsl:variable name="lines" select="tokenize($csv, '\n')" as="xs:string+" />
+
+
         <xsl:text>{ "events": [ </xsl:text>
         <xsl:for-each select="$lines[position() &gt; 1]">
           <xsl:if test=". != ''">
@@ -30,8 +32,14 @@
             <xsl:if test="$lineItems[5] = 'Quote'">
 
             <xsl:if test="position() != 1" >
-              <xsl:text>,</xsl:text>
+              <xsl:variable name="lineItems" select="$lines[position() - 1]" as="xs:string+" />
+
+              <xsl:if test="position() != 1" >
+                <xsl:text>,</xsl:text>
+              </xsl:if>
             </xsl:if>
+
+
             <xsl:text>{</xsl:text>
             <xsl:for-each select="$lineItems">
               <xsl:variable name="pos" select="position()" />
