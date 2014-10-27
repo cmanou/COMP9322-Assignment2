@@ -1,9 +1,11 @@
 package cs9322.part2.rest.resource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,9 +33,19 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xquery.XQConnection;
+import javax.xml.xquery.XQDataSource;
+import javax.xml.xquery.XQException;
+import javax.xml.xquery.XQExpression;
+import javax.xml.xquery.XQPreparedExpression;
+import javax.xml.xquery.XQResultSequence;
+import javax.xml.xquery.XQSequence;
 
 import org.apache.commons.io.FileUtils;
 
+import com.saxonica.xqj.SaxonXQDataSource;
+
+import net.sf.saxon.*;
 
 public class EventResource {
 	// Allows to insert contextual objects into the class, 
@@ -340,11 +352,24 @@ public class EventResource {
 	        
 	        transformer.transform(text, result);
 	        
-	        // Get converted xml and apply xquery //
+	        String xml  = writer.toString().substring(writer.toString().indexOf('\n')+1);
+
+			try {
+		        XQDataSource ds = new SaxonXQDataSource();
+		        XQConnection conn  = ds.getConnection();
+		        XQPreparedExpression exp = conn.prepareExpression("sum("+xml+"//price[text() != ''])");
+		        XQResultSequence resulta = exp.executeQuery();
+		        
+		        resulta.next();
+		        return resulta.getItemAsString(null);
+		        
+			} catch (XQException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	       
 	        
-	        // TODO  apply xquery to xml.
-	        
-			return "Put result string here";
+			return "Error";
 		
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
