@@ -195,7 +195,7 @@ public class Controller extends HttpServlet {
 					}
 					else if(reply.getStatus() == ClientResponse.Status.PRECONDITION_FAILED.getStatusCode())
 					{
-						request.setAttribute("result", "Order already Canclled!");
+						request.setAttribute("result", "Order can not be Cancelled! Or is already cancelled");
 						request.setAttribute("resultId", aId);
 					} else {
 						System.out.println("Unknown error: "+reply.getStatus());

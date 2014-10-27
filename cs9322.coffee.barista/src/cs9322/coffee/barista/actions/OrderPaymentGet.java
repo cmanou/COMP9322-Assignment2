@@ -39,7 +39,7 @@ public class OrderPaymentGet extends Action {
 		}), config);
 		WebResource service = client.resource(getBaseURI());
 
-		ClientResponse cresponse = service.path("rest").path("payments").path(id).accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
+		ClientResponse cresponse = service.path("rest").path("payment").path(id).accept(MediaType.APPLICATION_XML).header("key", "barista").get(ClientResponse.class);
 		logger.info("Status = " + cresponse.getStatus());
 
 		Payment p = null;
