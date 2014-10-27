@@ -125,7 +125,7 @@ public class OrderResource {
 		if(aOrder != null)
 		{
 			// Check that order can be deleted.
-			if(aOrder.getStatus().equals(Order.STATUS_PLACED) || aOrder.getStatus().equals(Order.STATUS_PREPARING)) {
+			if(aOrder.getStatus().equals(Order.STATUS_PLACED)) {
 				
 				// Delete payment if exists.
 				if(aOrder.getPaymentStatus().equals(Order.PAID))

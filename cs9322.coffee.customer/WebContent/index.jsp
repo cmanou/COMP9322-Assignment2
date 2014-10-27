@@ -23,12 +23,13 @@
 		<c:forEach items="${myOrdersList}" var="order"> 
 		  <tr>
 		    <td><a href="Controller?aAction=getOrder&aId=${order.id}">Coffee Order ${order.id}</a></td>
+		    <td>${order.status} - ${order.paymentStatus}</td>
 		    <td><a href="Controller?aAction=cancelOrder&aId=${order.id}">Cancel</a></td>
 		    <td><a href="Controller?aAction=updateOrder&aId=${order.id}">Update</a></td>
 		    <td><a href="Controller?aAction=payOrder&aId=${order.id}">Pay</a></td>
 		    <td><a href="Controller?aAction=getOptions&aId=${order.id}">Options</a></td>
 		    <c:choose>
-			  <c:when test="${(order.status == 'PLACED') || (order.status == 'CANCELLED')}">
+			  <c:when test="${order.paymentStatus != 'PAID'}">
 			    <td></td>
 			  </c:when>
 			  <c:otherwise>

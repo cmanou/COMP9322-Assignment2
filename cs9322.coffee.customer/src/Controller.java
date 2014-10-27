@@ -51,8 +51,8 @@ public class Controller extends HttpServlet {
 			
 			// Set web resource base uri.
 //			String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
-//			String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
-			String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";
+			String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
+//			String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";
 									
 			// Get action.
 			String aAction = request.getParameter("aAction");
@@ -404,8 +404,8 @@ public class Controller extends HttpServlet {
 		
 			// Set web resource base uri.
 //		String myBaseURI = request.getScheme()+"://"+request.getLocalAddr()+":"+request.getLocalPort()+"/cs9322.coffee.rest/rest";
-//		String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
-		String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";			
+		String myBaseURI = "http://cjze477.srvr:8080/cs9322.coffee.rest/rest";
+//		String myBaseURI = "http://localhost:8080/cs9322.coffee.rest/rest";			
 			// Get action.
 			String aAction = request.getParameter("aAction");
 				

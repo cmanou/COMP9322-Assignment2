@@ -1,5 +1,5 @@
 <Context>
-    <Environment name="restPath" value="http://localhost:8080/cs9322.coffee.rest" type="java.lang.String"/>
+    <Environment name="restPath" value="http://cjze477.srvr:8080/cs9322.coffee.rest" type="java.lang.String"/>
     
 </Context>
 <!--     <Environment name="restPath" value="http://cjze477.srvr:8080/cs9322.coffee.rest" type="java.lang.String"/>

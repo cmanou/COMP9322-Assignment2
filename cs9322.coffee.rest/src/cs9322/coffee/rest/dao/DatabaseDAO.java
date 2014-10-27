@@ -180,12 +180,12 @@ public enum DatabaseDAO {
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
-	        
+	        conn.close();
+
 	        if(rs.next()) {
 	        	return rs.getRow() == 1;
 	        }
 	        
-	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -322,12 +322,12 @@ public enum DatabaseDAO {
 	        PreparedStatement stmnt = conn.prepareStatement(query);
 	        stmnt.setInt(1,id);
 	        ResultSet rs = stmnt.executeQuery();
-	        
+	        conn.close();
+
 	        if(rs.next())
 	        {
 	        	return rs.getRow() == 1;
 	        }
-	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
